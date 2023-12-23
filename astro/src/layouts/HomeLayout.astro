@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <BaseHead title={title} description={description} />
+    <style>
+      .header {
+        width: 18%;
+      }
+    </style>
+  </head>
+  <body class="relative">
+    <header class="header flex flex-row">
+      <div class="mb-20">
+        <nav class="aboutme mb-10">
+          <span>I am</span>
+          <br />
+          <span class="text-lg mb-3 block">Rameez Kakodker</span><br />
+          <span>and I can be found on</span><br />
+          <div>
+            <a href="linkedin">Linkedin</a><br />
+            <a href="Medium">Medium</a><br />
+            <a href="Instagram">Instagram</a><br />
+          </div><br />
+          <span>I write about</span><br />
+          <div>
+            <a href="">Product Management</a><br />
+            <a href="">Design</a><br />
+            <a href="">Technology</a><br />
+            <a href="">Data</a><br />
+          </div>
+        </nav>
+        <div class="logo">
+          <span class="text-4xl font-extrabold block">
+            <a href="/">
+              <h1>mendicant bias</h1>
+            </a>
+          </span>
+          <span class="text-sm font-light block">beggar after knowledge</span>
+        </div>
+        <div class="mt-10">thank you for reading!</div>
+      </div>
+    </header>
+
+    <main class="content-grid">
+      <slot />
+    </main>
+    <footer>Footer</footer>
+    <script client-side>
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          console.log(
+            window.performance.getEntriesByType("navigation")[0].toJSON()
+          );
+        }, 0);
+      });
+    </script>
+  </body>
+</html>

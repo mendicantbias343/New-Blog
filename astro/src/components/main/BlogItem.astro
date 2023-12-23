@@ -1,0 +1,112 @@
+---
+interface Props {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+  link?: URL;
+}
+
+const { userId, id, title, body, link = "/abc" } = Astro.props;
+---
+
+<div id={id} class="blog-item">
+  <a href={link}>
+    <h2>{title}</h2>
+    <p class="line-clamp-3 not-italic">{body}</p>
+  </a>
+</div>
+<style>
+  .blog-item {
+    padding-left: 10px;
+    position: relative;
+  }
+
+  .blog-item::after {
+    background: linear-gradient(
+      180deg,
+      rgba(233, 153, 34, 1) 0%,
+      rgba(233, 136, 208, 1) 52%,
+      rgba(233, 153, 34, 1) 100%
+    );
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 2px;
+    top: 0;
+    left: 0px;
+    content: "";
+    position: absolute;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  .blog-item:hover::after {
+    animation: steam 5s ease-in-out both;
+    filter: blur(50px);
+    width: 100%;
+    opacity: 0.5;
+    transition: filter ease-in-out 2s;
+  }
+
+  @keyframes steam {
+    0% {
+      background: linear-gradient(
+        45deg,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 52%,
+        rgba(233, 153, 34, 1) 100%
+      );
+    }
+    20% {
+      background: linear-gradient(
+        45deg,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 20%,
+        rgba(233, 136, 208, 1) 52%,
+        rgba(233, 136, 208, 1) 80%,
+        rgba(233, 153, 34, 1) 100%
+      );
+    }
+    40% {
+      background: linear-gradient(
+        45deg,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 20%,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 80%,
+        rgba(233, 153, 34, 1) 100%
+      );
+    }
+    60% {
+      background: linear-gradient(
+        45deg,
+        rgba(233, 136, 208, 1) 0%,
+        rgba(233, 153, 34, 1) 20%,
+        rgba(233, 153, 34, 1) 50%,
+        rgba(233, 153, 34, 1) 80% rgba(233, 136, 208, 1) 100%
+      );
+      filter: blur(90px);
+    }
+    80% {
+      background: linear-gradient(
+        90deg,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 20%,
+        rgba(233, 136, 208, 1) 52%,
+        rgba(233, 136, 208, 1) 80%,
+        rgba(233, 153, 34, 1) 100%
+      );
+    }
+    100% {
+      background: linear-gradient(
+        90deg,
+        rgba(233, 153, 34, 1) 0%,
+        rgba(233, 136, 208, 1) 20%,
+        rgba(233, 136, 208, 1) 52%,
+        rgba(233, 136, 208, 1) 80%,
+        rgba(233, 153, 34, 1) 100%
+      );
+    }
+  }
+</style>
