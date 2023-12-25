@@ -1,14 +1,15 @@
-import {defineField, defineType} from 'sanity'
+import {SanityDocument, defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'post',
-  title: 'Post',
+  title: 'Articles',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
+      validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
     }),
     defineField({
       name: 'slug',
@@ -16,8 +17,9 @@ export default defineType({
       type: 'slug',
       options: {
         source: 'title',
-        maxLength: 96,
+        maxLength: 200,
       },
+      validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
     }),
 
     defineField({
@@ -27,6 +29,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
     }),
     defineField({
       name: 'categories',
@@ -40,9 +43,16 @@ export default defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'published',
+      title: 'Is Published',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'blockContent',
+      validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
     }),
   ],
 
@@ -57,3 +67,10 @@ export default defineType({
     },
   },
 })
+
+function customRule(value: string, context: SanityDocument) {
+  if (!value) {
+    return 'No value found'
+  }
+  return true
+}

@@ -3,11 +3,11 @@ import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 import {structure} from './src/structure'
-import {workflow} from 'sanity-plugin-workflow'
 
-import {dashboardTool, projectUsersWidget, projectInfoWidget} from '@sanity/dashboard'
-
+import {dashboardTool, projectInfoWidget} from '@sanity/dashboard'
+import {createAsyncPublishAction} from './actions/index.js'
 import {documentListWidget} from 'sanity-plugin-dashboard-widget-document-list'
+import {tags} from 'sanity-plugin-tags'
 
 export default defineConfig({
   name: 'default',
@@ -19,24 +19,37 @@ export default defineConfig({
   plugins: [
     dashboardTool({
       widgets: [
-        // documentListWidget({title: 'New', types: ['post'], showCreateButton: true}),
-
+        documentListWidget({
+          title: 'Notes in Draft',
+          query: '*[_type=="note" && published == false ]',
+          showCreateButton: false,
+        }),
+        documentListWidget({
+          title: 'Articles in Draft',
+          query: '*[_type == "post" && published == false]',
+          showCreateButton: false,
+        }),
         projectInfoWidget(),
-        projectUsersWidget(),
       ],
     }),
     deskTool({structure}),
     visionTool(),
-    workflow({
-      // Required, list of document type names
-      // schemaTypes: ['article', 'product'],
-      schemaTypes: ['post'],
-      // Optional, see below
-      // states: [],
-    }),
+
+    tags(),
   ],
 
   schema: {
     types: schemaTypes,
+  },
+  document: {
+    actions: (prev, context) =>
+      prev.map((originalAction) => {
+        console.log('Operation is ' + originalAction.action)
+        return originalAction.action === 'publish'
+          ? createAsyncPublishAction(originalAction, context)
+          : originalAction.action === 'unpublish'
+            ? createAsyncPublishAction(originalAction, context)
+            : originalAction
+      }),
   },
 })

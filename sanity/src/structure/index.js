@@ -9,7 +9,7 @@ export const structure = (S, context) =>
         (listItem) =>
           ![
             'siteSettings',
-            'workflow-metadata',
+
             // 'category',
             // 'author',
           ].includes(listItem.getId()),

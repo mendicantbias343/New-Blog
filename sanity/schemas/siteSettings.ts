@@ -1,4 +1,4 @@
-import {defineType, defineField} from 'sanity';
+import {defineType, defineField} from 'sanity'
 
 export default defineType({
   name: 'siteSettings',
@@ -8,12 +8,12 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string'
+      type: 'string',
     }),
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text'
+      type: 'text',
     }),
     defineField({
       name: 'url',
@@ -25,5 +25,6 @@ export default defineType({
       title: 'Open Graph Image',
       type: 'image',
     }),
-  ]
-});
+    // add homepage elements
+  ],
+})
