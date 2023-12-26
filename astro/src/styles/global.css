@@ -104,7 +104,7 @@ a.fancy-blur::after {
   content: "";
   position: absolute;
   height: 100%;
-  width: 2px;
+  width: 0%;
   top: 0;
   left: 0;
   z-index: -1;
@@ -119,5 +119,69 @@ a.fancy-blur:hover::after {
   opacity: 0.5;
 }
 
-@keyframes steam {
+/* HEADER SHINENIGANS */
+
+.header-text-change > span {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1rem;
+  overflow: hidden;
+  align-items: flex-start;
+}
+.text-change-block {
+  height: 1rem;
+  color: var(--accent-color);
+  animation: moveUp 8s ease-in-out running infinite;
+}
+
+@keyframes moveUp {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  7% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  49% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  57% {
+    opacity: 1;
+    transform: translateY(-1rem);
+  }
+  92% {
+    opacity: 1;
+    transform: translateY(-1rem);
+  }
+  99% {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+  }
+  .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
 }
