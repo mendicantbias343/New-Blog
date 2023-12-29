@@ -1,0 +1,64 @@
+---
+import Icon from "astro-icon";
+import Navigation from "../main/Navigation.astro";
+import ThemeSwitcher from "./ThemeSwitcher.astro";
+
+interface Props {
+  active: string;
+}
+const { active } = Astro.props;
+
+// TODO - Fetch the navigation links from Sanity from Sanity
+---
+
+<div class="w-full h-4 accent top-bar"></div>
+<div class="content-grid">
+  <header
+    class="flex flex-col-reverse justify-center breakout mt-4 mb-4 md:flex-col"
+  >
+    <!-- menu -->
+    <div class="flex flex-row justify-between mt-8 menu">
+      <Navigation activeItem="about" />
+      <div class="flex flex-row justify-start gap-5">
+        <div class="w-5"><Icon pack="ri" name="search-line" /></div>
+        <div class="w-5">
+          <a class="fancy-blur" target="_blank" href=""
+            ><Icon pack="ri" name="instagram-line" /></a
+          >
+        </div>
+        <div class="w-5">
+          <a class="fancy-blur" target="_blank" href="">
+            <Icon pack="ri" name="medium-line" /></a
+          >
+        </div>
+        <div class="w-5">
+          <a class="fancy-blur" target="_blank" href="">
+            <Icon pack="ri" name="linkedin-line" /></a
+          >
+        </div>
+        <div class="w-5" style="cursor: pointer;">
+          <ThemeSwitcher />
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <div>
+        <a href="/" class="relative">
+          <h1>
+            mendicant <span class="accent" style="color: var(--accent-color);"
+              >•</span
+            > bias
+          </h1>
+          <span
+            class="text-xs absolute bottom-[-10px] left-[45%] h-[1rem] header-text-change"
+            >scientia
+            <span>
+              <span class="text-change-block"> humilitas</span>
+              <span class="text-change-block"> satis est</span>
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </header>
+</div>

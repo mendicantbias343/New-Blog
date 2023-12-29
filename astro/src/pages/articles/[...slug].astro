@@ -1,0 +1,103 @@
+---
+import PortableText from "../../components/sanityPortableText.astro";
+import { getPosts } from "../../sanity/api";
+import Layout from "../../layouts/HomeLayout.astro";
+import { urlForImage } from "../../sanity/urlForImage";
+import FormattedDate from "../../components/FormattedDate.astro";
+export async function getStaticPaths() {
+  const data = await getPosts("post");
+
+  return data.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+const post = Astro.props;
+
+const title = "Reading " + post.title + " - mendicant bias";
+const imgURL =
+  "background:  linear-gradient(250deg, rgba(0, 0, 0, 0.1) 20%,rgba(0, 0, 0, 0.8) 100%),url(" +
+  urlForImage(post.image) +
+  "); background-size: cover; background-repeat: no-repeat;background-position: center;";
+
+const cats = post.cats.map((cat) => {
+  return {
+    category: cat.title,
+    slug: cat.slug.current,
+  };
+});
+---
+
+<Layout title={title} description={post.summary}>
+  <!-- Iterate through the blog posts -->
+
+  <div class="img-module full-width h-80 mb-8" style={imgURL}>
+    <div class="title">
+      <div class="flex flex-col justify-center">
+        <div>
+          {
+            cats.map((cat) => {
+              return <a href={cat.slug}>{cat.category}</a>;
+            })
+          }
+        </div>
+        <h1 class="block opacity-100">{post.title}</h1>
+        <div class="text-xs">
+          <span
+            >Written on
+            <FormattedDate date={post._createdAt} />
+            <!-- {post._createdAt} -->
+          </span>
+          <span class=""> •</span>
+
+          <span>Approx. {post.readtime} mins read time</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <PortableText portableText={post.body} />
+</Layout>
+
+<style>
+  .img-module {
+    background-attachment: scroll;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-position: 50% 50%;
+    background-size: cover;
+  }
+  .img-module::after {
+    content: "";
+    backdrop-filter: blur(3px);
+    position: absolute;
+    width: 100%;
+    height: 20rem;
+    z-index: -1;
+  }
+
+  .img-module > .title {
+    z-index: 2;
+    width: 100%;
+    background: #fff;
+    background-clip: text;
+
+    color: transparent;
+    margin-top: 10rem;
+    /* color: var(--text-color-contrast); */
+  }
+
+  .title a {
+    background: #fff;
+    background-clip: text;
+
+    color: transparent;
+  }
+  /* .img-module > .title h1 {
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  } */
+</style>

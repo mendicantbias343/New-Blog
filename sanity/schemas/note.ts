@@ -50,6 +50,18 @@ export default defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'readtime',
+      title: 'Reading Time',
+      type: 'number',
+      initialValue: 3,
+    }),
+    defineField({
+      name: 'summary',
+      title: 'Summary',
+      type: 'text',
+      initialValue: '',
+    }),
   ],
 
   preview: {

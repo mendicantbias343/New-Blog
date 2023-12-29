@@ -1,0 +1,105 @@
+---
+import PortableText from "../../components/sanityPortableText.astro";
+import { getPosts } from "../../sanity/api";
+import Layout from "../../layouts/HomeLayout.astro";
+import { urlForImage } from "../../sanity/urlForImage";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { number, object, string } from "astro/zod";
+import PrevIcons from "../../components/PrevIcon.astro";
+import NextIcon from "../../components/NextIcon.astro";
+
+interface Note {
+  title: string;
+  _createdAt: string;
+  _id: string;
+  body: Array<Object>;
+  slug: string;
+  notetags: Array<Object>;
+  _type: string;
+  readingtime: number;
+  summary: string;
+}
+
+export async function getStaticPaths() {
+  const data = await getPosts("note");
+  return data.map((post: Note, index) => ({
+    params: { slug: post.slug },
+    props: [data[index - 1], post, data[index + 1]],
+  }));
+}
+
+const prevPost: Note = Astro.props[0];
+const nextPost: Note = Astro.props[2];
+const post: Note = Astro.props[1];
+
+const title = "Reading Note: " + post.title + " - mendicant bias";
+
+const tags = post.notetags.map((tag) => tag.label);
+---
+
+<Layout title={title} description={post.summary ? post.summary : title}>
+  <div class="mb-4">
+    <a href={prevPost.slug} class="flex flex-row gap-4 items-center">
+      <span class="flex flex-row gap-1 w-fit readprevnexttext">
+        <PrevIcons /> Read Previous</span
+      >
+
+      <span class="opacity-35 line-clamp-2"> {prevPost.title}</span>
+    </a>
+  </div>
+  <article class="relative">
+    <span class="dateholder absolute top-[4rem] left-[-4.2rem] rotate-[-90deg]">
+      <FormattedDate date={post._createdAt} />
+    </span>
+    <span class="text-xs uppercase">
+      Approx {post.readingtime ? post.readingtime : 2} mins reading time</span
+    >
+    <h1
+      class="not-italic uppercase text-left"
+      style="font-style: normal !important;"
+    >
+      {post.title}
+    </h1>
+
+    <PortableText portableText={post.body} />
+
+    <div class="flex flex-row gap-3 opacity-70">
+      {post.notetags.map((tag) => <span> #{tag.label} </span>)}
+    </div>
+  </article>
+  <div class="mt-8">
+    <a href={nextPost.slug} class="flex flex-row gap-4 items-center">
+      <span class="flex flex-row gap-1 w-fit readprevnexttext">
+        <NextIcon /> Read Next
+      </span>
+
+      <span class="opacity-35 line-clamp-2 text-left">
+        {nextPost.title}
+      </span>
+    </a>
+  </div>
+</Layout>
+
+<style>
+  article {
+    padding-top: 2rem;
+    border-top: 2px dashed hsl(var(--accent-hue), 60%, 72%);
+    border-bottom: 2px dashed hsl(var(--accent-hue), 60%, 72%);
+    padding-bottom: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 768px) {
+    .dateholder {
+      position: relative;
+      rotate: 0deg;
+      top: auto;
+      left: auto;
+      display: block;
+      transform: none;
+    }
+    .readprevnexttext {
+      min-width: 40%;
+    }
+  }
+</style>

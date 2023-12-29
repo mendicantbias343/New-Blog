@@ -1,0 +1,14 @@
+---
+import Layout from "../../layouts/HomeLayout.astro";
+import BlogList from "../../components/main/BlogList.astro";
+---
+
+<Layout
+  title="Articles from Mendicant Bias"
+  description="Lorem ipsum dolor sit amet"
+>
+  <!-- Iterate through the blog posts -->
+  <div class="mt-8 flex flex-col text-left gap-10 relative breakout">
+    <BlogList limit="4" type="post" sortBy="latest" />
+  </div>
+</Layout>

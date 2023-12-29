@@ -1,10 +1,7 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import FormattedDate from "../components/FormattedDate.astro";
-import { Icon } from "astro-icon";
+import Footer from "../components/main/Footer.astro";
+import Header from "../components/main/Header.astro";
 
 interface Props {
   title: string;
@@ -20,120 +17,77 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <BaseHead title={title} description={description} />
-    <style>
-      .header {
-        width: 18%;
+    <script is:inline>
+      const hueVal = randomIntFromInterval(0, 255);
+      localStorage.setItem("currentHue", hueVal.toString());
+      document.documentElement.style.cssText += "--accent-hue: " + hueVal + ";";
+
+      function randomIntFromInterval(min, max) {
+        // min and max included
+        return Math.floor(Math.random() * (max - min + 1) + min);
       }
-    </style>
-  </head>
-  <body>
-    <div class="w-full h-4 accent top-bar bg-red-800"></div>
-    <header class="flex flex-col justify-center mt-4 content-grid">
-      <div class="breakout ">
-        <!-- menu -->
-        <div class="flex flex-row justify-between mt-8 menu">
-          <nav>
-            <ul class="flex flex-row justify-start gap-5">
-              <li><a class="not-italic fancy-blur" href="">About</a></li>
-              <li><a class="not-italic fancy-blur" href="">Articles</a></li>
-              <li><a class="not-italic fancy-blur" href="">Notes</a></li>
-              <li><a class="not-italic fancy-blur" href="">/uses</a></li>
-            </ul>
-          </nav>
-          <div class="flex flex-row justify-start gap-5">
-            <div class="w-5"><Icon pack="ri" name="search-line" /></div>
-            <div class="w-5">
-              <a class="fancy-blur" target="_blank" href=""
-                ><Icon pack="ri" name="instagram-line" /></a
-              >
-            </div>
-            <div class="w-5">
-              <a class="fancy-blur" target="_blank" href="">
-                <Icon pack="ri" name="medium-line" /></a
-              >
-            </div>
-            <div class="w-5">
-              <a class="fancy-blur" target="_blank" href="">
-                <Icon pack="ri" name="linkedin-line" /></a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-8">
-        <div>
-          <a href="/" class="relative">
-            <h1>mendicant <span class="accent" style="color: var(--accent-color);">•</span> bias</h1>
-            <span class="text-xs absolute bottom-[-10px] left-[45%] h-[1rem] header-text-change ">scientia 
-             <span>
-               <span class="text-change-block">
-                 humilitas
-               </span>
-               <span class="text-change-block">
-                satis est
-               </span>
+      const theme = (() => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      })();
 
-             </span>
-              </span>
-          </a>
-          
-        </div>
-      </div>
-    </header>
+      const setCSSForDarkTheme = () => {
+        let hueVal = localStorage.getItem("currentHue");
+        document.documentElement.style.cssText =
+          "--accent-hue: " +
+          hueVal +
+          "; --accent-color: hsl(" +
+          hueVal +
+          ", 85%, 80%); --text-color: hsl(215deg 30% 80%); --text-color-contrast:rgb(56, 56, 56); --button-border-color: rgba(255, 255, 255, 0.6); --bg-color: #0f172a";
+      };
 
-    <style>
-    
-    </style>
-    <main class="content-grid">
-      <slot />
-    </main>
-    <footer class="content-grid mt-16 border-t border-spacing-1 border-slate-300">
-      <div class="breakout mt-16">
-        
-        <div class="flex flex-col-reverse md:flex-row md:justify-between gap-5">
-          <div class="flex flex-col gap-4">
-            <div>
-              Website & Code  ©️ Rameez Kakodker from the very beginning to this very moment in time in 2024
-            </div>
-            <div>
-              This page loaded in 0.352s (details)
-            </div>
-            <div class="mt-8">
-              <svg width="40" height="40" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M102.475 51.5605C102.475 79.6429 79.7098 102.408 51.6274 102.408C23.5451 102.408 0.779785 79.6429 0.779785 51.5605C0.779785 23.4782 23.5451 0.712891 51.6274 0.712891C79.7098 0.712891 102.475 23.4782 102.475 51.5605ZM7.39601 51.5605C7.39601 75.9889 27.1991 95.792 51.6274 95.792C76.0558 95.792 95.8589 75.9889 95.8589 51.5605C95.8589 27.1322 76.0558 7.32911 51.6274 7.32911C27.1991 7.32911 7.39601 27.1322 7.39601 51.5605Z" fill="#C73C3C"/>
-                <path d="M39.1782 33.3105L61.2078 31.654L73.6571 49.904L64.0768 69.8105L42.0472 71.4669L29.5979 53.2169L39.1782 33.3105Z" fill="#C73C3C"/>
-                <path d="M60.5729 60.5691L59.4215 60.6557L58.9207 61.6962L55.2962 69.2274L54.7955 70.2678L55.4462 71.2217L60.1561 78.1263L60.8068 79.0802L61.9583 78.9936L70.2927 78.3669L71.4442 78.2803L71.9449 77.2398L75.5694 69.7087L76.0702 68.6682L75.4195 67.7143L70.7095 60.8098L70.0588 59.8559L68.9074 59.9425L60.5729 60.5691Z" fill="#C73C3C" stroke="#FCF6F6" stroke-width="4"/>
-                </svg>
-                
-                
-                
-            </div>
+      const setCSSForLightTheme = () => {
+        current = "--accent-hue: " + localStorage.getItem("currentHue");
+        document.documentElement.style.cssText = current;
+      };
 
-          </div>
-          <div>
-            <nav>
-              <ul class="flex flex-row justify-start gap-5">
-                <li><a class="not-italic fancy-blur" href="">About</a></li>
-                <li><a class="not-italic fancy-blur" href="">Articles</a></li>
-                <li><a class="not-italic fancy-blur" href="">Notes</a></li>
-                <li><a class="not-italic fancy-blur" href="">/uses</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-        
-        
+      if (theme === "light") {
+        document.documentElement.classList.remove("dark");
+        setCSSForLightTheme();
+      } else {
+        document.documentElement.classList.add("dark");
+        setCSSForDarkTheme();
+      }
 
-      </div>
-    </footer>
-    <script client-side>
+      window.localStorage.setItem("theme", theme);
+
+      const handleToggleClick = () => {
+        const element = document.documentElement;
+        element.classList.toggle("dark");
+        const isDark = element.classList.contains("dark");
+        if (isDark) {
+          setCSSForDarkTheme();
+        } else {
+          setCSSForLightTheme();
+        }
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      };
       window.addEventListener("load", () => {
-        setTimeout(() => {
-          console.log(
-            window.performance.getEntriesByType("navigation")[0].toJSON()
-          );
-        }, 0);
+        document
+          .getElementById("themeToggle")
+          .addEventListener("click", handleToggleClick);
       });
     </script>
+  </head>
+
+  <body>
+    <Header active="" />
+    <main class="content-grid mt-8">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>

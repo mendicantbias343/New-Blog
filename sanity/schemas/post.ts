@@ -16,8 +16,11 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: {
-        source: 'title',
-        maxLength: 200,
+        source: (doc: Document) => {
+          const date = formatDate(new Date(), 'YYYY-MMM-DD')
+          return `/${date}/${doc.title}`
+        },
+        slugify: (input: any) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 200),
       },
       validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
     }),
@@ -49,10 +52,22 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'summary',
+      title: 'Summary',
+      type: 'text',
+      initialValue: '',
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'blockContent',
       validation: (Rule) => Rule.custom((val, context) => customRule(val, context)),
+    }),
+    defineField({
+      name: 'readtime',
+      title: 'Reading Time',
+      type: 'number',
+      initialValue: 5,
     }),
   ],
 
@@ -73,4 +88,17 @@ function customRule(value: string, context: SanityDocument) {
     return 'No value found'
   }
   return true
+}
+
+function formatDate(date: Date, format: string) {
+  const options: any = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }
+
+  let x: any = new Intl.DateTimeFormat('en-US', options).format(date)
+  x = x.split('/')
+  x = x[2] + '-' + x[0] + '-' + x[1]
+  return x
 }

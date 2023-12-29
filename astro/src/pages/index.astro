@@ -5,8 +5,7 @@ import BlogList from "../components/main/BlogList.astro";
 
 <Layout title="About Me" description="Lorem ipsum dolor sit amet">
   <!-- Iterate through the blog posts -->
-  <div class="mt-4 flex flex-col text-left gap-10 relative">
-    <div>These are some of my articles</div>
-    <BlogList limit="4" />
+  <div class="mt-8 flex flex-col text-left gap-10 relative breakout">
+    <BlogList limit="4" category="" sortBy="latest" />
   </div>
 </Layout>

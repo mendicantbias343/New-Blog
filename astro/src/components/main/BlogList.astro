@@ -1,11 +1,17 @@
 ---
+import Icon from "astro-icon";
+
+import Button from "./Button";
+
 import BlogItem from "./BlogItem.astro";
+import { getPosts } from "../../sanity/api";
 interface Props {
   category?: string;
   limit?: string;
   pagination?: number;
   isSummary?: boolean;
   sortBy?: string;
+  type?: string;
 }
 
 interface Post {
@@ -14,19 +20,68 @@ interface Post {
   title: string;
   body: string;
 }
-const { category, limit, pagination, isSummary, sortBy } = Astro.props;
-const data = await fetch(
-  "https://jsonplaceholder.typicode.com/posts?userId=1"
-).then((r) => r.json());
+const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
+
+// const typess = type == "articles" ? "post" : type == "notes" ? "note" : "";
+
+const data = await getPosts(type);
 ---
 
+<div class="flex flex-row gap-4 flex-wrap justify-center md:justify-start">
+  {
+    !type && (
+      <>
+        <Button
+          client:only="react"
+          type="filter"
+          content="Article"
+          isActive={false}
+        />
+        <Button
+          client:only="react"
+          type="filter"
+          content="Notes"
+          isActive={false}
+        />
+      </>
+    )
+  }
+
+  <Button
+    client:only="react"
+    type="sort"
+    content="Most Popular"
+    isActive={false}
+  />
+  <Button client:only="react" type="sort" content="Latest" isActive={true} />
+</div>
 {
-  data.map((post: Post) => (
-    <BlogItem
-      userId={post.userId}
-      id={post.id}
-      title={post.title}
-      body={post.body}
-    />
-  ))
+  type && (
+    <>
+      <div class="breakout">
+        <h1>
+          Showing {sortBy} {type == "post" ? "article" : type}s:
+        </h1>
+      </div>
+    </>
+  )
 }
+
+<div
+  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-0 gap-y-16 md:gap-x-16 lg:gap-x-16 xl:gap-x-32 grid-flow-row-dense main-grid"
+>
+  {
+    data.map((post, index) => (
+      <BlogItem
+        title={post.title}
+        body={post.summary}
+        date={post._createdAt}
+        imgURL={post.image}
+        readingTime={post.readtime}
+        type={post._type}
+        index={index}
+        slug={post.slug}
+      />
+    ))
+  }
+</div>

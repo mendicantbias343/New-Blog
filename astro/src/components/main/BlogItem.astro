@@ -1,112 +1,221 @@
 ---
+import { urlForImage } from "../../sanity/urlForImage";
+import FormattedDate from "../FormattedDate.astro";
 interface Props {
-  userId: number;
-  id: number;
+  date: string;
+  type: string;
   title: string;
   body: string;
-  link?: URL;
+  slug?: string;
+  readingTime: string;
+  imgURL: URL;
+  index: number;
 }
 
-const { userId, id, title, body, link = "/abc" } = Astro.props;
+const { date, type, title, body, slug, readingTime, imgURL, index } =
+  Astro.props;
 ---
 
-<div id={id} class="blog-item">
-  <a href={link}>
-    <h2>{title}</h2>
-    <p class="line-clamp-3 not-italic">{body}</p>
-  </a>
-</div>
+<a href={type == "post" ? "articles" + slug : "notes" + slug}>
+  <div
+    class="blog-item flex flex-col flex-grow relative md:ml-10 xl:ml-0"
+    style={"--i:" + index}
+  >
+    <div
+      class="md:absolute md:top-[34px] md:left-[-4rem] md:rotate-[-90deg] not-italic capitalize"
+    >
+      <FormattedDate date={date} />
+    </div>
+    {
+      imgURL && (
+        <div class="w-full h-64 mb-4 fill">
+          <img
+            class="h-64"
+            src={imgURL ? urlForImage(imgURL) : ""}
+            alt={title}
+          />
+        </div>
+      )
+    }
+
+    <h2 class="leading-6">
+      {
+        type.toLowerCase() === "note" ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 18 17"
+            class="inline-block w-5"
+          >
+            <g clip-path="url(#clip0_544_12)">
+              <path d="M13.7222 14.1663H3.33336V3.77745H9.57614L10.5206 2.83301H3.33336C3.08288 2.83301 2.84266 2.93251 2.66554 3.10963C2.48842 3.28675 2.38892 3.52697 2.38892 3.77745V14.1663C2.38892 14.4168 2.48842 14.657 2.66554 14.8342C2.84266 15.0113 3.08288 15.1108 3.33336 15.1108H13.7222C13.9727 15.1108 14.213 15.0113 14.3901 14.8342C14.5672 14.657 14.6667 14.4168 14.6667 14.1663V7.08301L13.7222 8.02745V14.1663Z" />
+              <path d="M16.3337 2.75817L14.7423 1.16678C14.6716 1.09596 14.5877 1.03977 14.4954 1.00143C14.403 0.963094 14.304 0.943359 14.2039 0.943359C14.1039 0.943359 14.0049 0.963094 13.9125 1.00143C13.8201 1.03977 13.7362 1.09596 13.6656 1.16678L7.19144 7.67872L6.66727 9.95011C6.64494 10.0602 6.64729 10.1739 6.67414 10.283C6.701 10.3921 6.7517 10.4938 6.8226 10.581C6.89349 10.6682 6.98282 10.7385 7.08415 10.787C7.18549 10.8355 7.29632 10.8609 7.40866 10.8615C7.46672 10.8679 7.52532 10.8679 7.58338 10.8615L9.87366 10.3562L16.3337 3.83483C16.4045 3.76421 16.4607 3.6803 16.499 3.58792C16.5373 3.49555 16.5571 3.39651 16.5571 3.2965C16.5571 3.19648 16.5373 3.09745 16.499 3.00507C16.4607 2.91269 16.4045 2.82879 16.3337 2.75817ZM9.38255 9.48261L7.65421 9.86511L8.0556 8.15094L12.9289 3.24455L14.2606 4.57622L9.38255 9.48261ZM14.7942 4.04261L13.4625 2.71094L14.1945 1.96483L15.5356 3.30594L14.7942 4.04261Z" />
+            </g>
+            <defs>
+              <clipPath id="clip0_544_12">
+                <rect
+                  width="17"
+                  height="17"
+                  fill="white"
+                  transform="translate(0.5)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="inline-block w-5 "
+          >
+            <path d="M9.92295 16.5H13.4999V15.5H9.92295V16.5ZM9.92295 12.5H16.4999V11.5H9.92295V12.5ZM7.49995 8.5H16.4999V7.5H7.49995V8.5ZM7.22095 21C6.04561 21 5.04328 20.5887 4.21395 19.766C3.38528 18.944 2.97095 17.945 2.97095 16.769C2.97095 15.8577 3.22628 15.0463 3.73695 14.335C4.24828 13.623 4.90395 13.114 5.70395 12.808H2.99995V11.808H7.53795V16.346H6.53795V13.575C5.79328 13.7337 5.17928 14.108 4.69595 14.698C4.21261 15.288 3.97095 15.972 3.97095 16.75C3.97095 17.658 4.28661 18.4267 4.91795 19.056C5.54928 19.6853 6.31695 20 7.22095 20V21ZM9.92295 20V19H18.3849C18.5383 19 18.6793 18.936 18.8079 18.808C18.9359 18.6793 18.9999 18.5383 18.9999 18.385V5.615C18.9999 5.46167 18.9359 5.32067 18.8079 5.192C18.6793 5.064 18.5383 5 18.3849 5H5.61495C5.46161 5 5.32061 5.064 5.19195 5.192C5.06395 5.32067 4.99995 5.46167 4.99995 5.615V9.423H3.99995V5.615C3.99995 5.155 4.15428 4.771 4.46295 4.463C4.77095 4.15433 5.15495 4 5.61495 4H18.3849C18.8449 4 19.2289 4.15433 19.5369 4.463C19.8456 4.771 19.9999 5.155 19.9999 5.615V18.385C19.9999 18.845 19.8459 19.229 19.5379 19.537C19.2293 19.8457 18.8449 20 18.3849 20H9.92295Z" />
+          </svg>
+        )
+      }
+      {title}
+    </h2>
+    <p class="line-clamp-5 not-italic">{body}</p>
+
+    <div class="mt-4 flex flex-row justify-start items-center">
+      <span class="w-[35%] h-[2px] bg-[var(--accent-color)]"></span>
+      <span class="ml-4 text-xs">{readingTime} mins read</span>
+    </div>
+    <div class="mt-2 read-more-icon w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33">
+        <g opacity="0.5">
+          <path
+            d="M16.1017 3.50195C8.93368 3.50195 3.10168 9.33395 3.10168 16.502C3.10168 23.67 8.93368 29.502 16.1017 29.502C23.2697 29.502 29.1017 23.67 29.1017 16.502C29.1017 9.33395 23.2697 3.50195 16.1017 3.50195ZM16.1017 5.50195C22.1887 5.50195 27.1017 10.415 27.1017 16.502C27.1017 22.589 22.1887 27.502 16.1017 27.502C10.0147 27.502 5.10168 22.589 5.10168 16.502C5.10168 10.415 10.0147 5.50195 16.1017 5.50195ZM16.8217 10.096L15.3817 11.502L19.3817 15.502H9.10168V17.502H19.3817L15.3817 21.502L16.8217 22.908L22.5077 17.221L23.2277 16.501L22.5077 15.781L16.8207 10.095L16.8217 10.096Z"
+          ></path>
+        </g>
+      </svg>
+    </div>
+  </div>
+</a>
 <style>
-  .blog-item {
-    padding-left: 10px;
-    position: relative;
+  /* @supports (animation-timeline: view()) {
+    .blog-item {
+      opacity: 0;
+    }
+  } */
+
+  /* @media (prefers-reduced-motion: no-preference) {
+    .blog-item {
+      position: relative;
+      animation: fade-in linear forwards;
+      animation-timeline: view();
+      animation-range: 0px 500px;
+      transform-origin: top;
+    }
   }
 
-  .blog-item::after {
-    background: linear-gradient(
-      180deg,
-      rgba(233, 153, 34, 1) 0%,
-      rgba(233, 136, 208, 1) 52%,
-      rgba(233, 153, 34, 1) 100%
-    );
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      scale: 0.8;
+    }
+    to {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+  .blog-item {
+    position: relative;
+  } */
+
+  /* .blog-item::after {
+    z-index: -10;
+    
     content: "";
     position: absolute;
     height: 100%;
-    width: 2px;
+    width: 0px;
     top: 0;
     left: 0px;
     content: "";
     position: absolute;
     z-index: -1;
-    opacity: 0.6;
-  }
+  } */
 
-  .blog-item:hover::after {
-    animation: steam 5s ease-in-out both;
-    filter: blur(50px);
+  /* .blog-item:hover::after {
+ 
+    filter: blur(20px);
     width: 100%;
-    opacity: 0.5;
-    transition: filter ease-in-out 2s;
-  }
+    opacity: 0.2;
+    transition: filter ease-in-out 400ms;
+  } */
 
-  @keyframes steam {
+  /* @keyframes steam {
     0% {
       background: linear-gradient(
         45deg,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 52%,
-        rgba(233, 153, 34, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
     }
     20% {
       background: linear-gradient(
         45deg,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 20%,
-        rgba(233, 136, 208, 1) 52%,
-        rgba(233, 136, 208, 1) 80%,
-        rgba(233, 153, 34, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
     }
     40% {
       background: linear-gradient(
         45deg,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 20%,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 80%,
-        rgba(233, 153, 34, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
     }
     60% {
       background: linear-gradient(
         45deg,
-        rgba(233, 136, 208, 1) 0%,
-        rgba(233, 153, 34, 1) 20%,
-        rgba(233, 153, 34, 1) 50%,
-        rgba(233, 153, 34, 1) 80% rgba(233, 136, 208, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
       filter: blur(90px);
     }
     80% {
       background: linear-gradient(
         90deg,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 20%,
-        rgba(233, 136, 208, 1) 52%,
-        rgba(233, 136, 208, 1) 80%,
-        rgba(233, 153, 34, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
     }
     100% {
       background: linear-gradient(
         90deg,
-        rgba(233, 153, 34, 1) 0%,
-        rgba(233, 136, 208, 1) 20%,
-        rgba(233, 136, 208, 1) 52%,
-        rgba(233, 136, 208, 1) 80%,
-        rgba(233, 153, 34, 1) 100%
+        hsl(var(--accent-hue), 80%, 80%) 0%,
+        hsl(var(--accent-hue), 50%, 80%) 52%,
+        hsl(var(--accent-hue), 80%, 80%) 100%
       );
+    }
+  } */
+  .read-more-icon {
+    transition: transform 400ms ease-in-out;
+  }
+  .blog-item:hover .read-more-icon,
+  .read-more-icon:hover {
+    transform: translateX(1.5rem);
+  }
+  svg,
+  path {
+    color: var(--text-color);
+    /* OR */
+    fill: var(--text-color);
+  }
+  .fill {
+  }
+  .fill img {
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .blog-item {
+      opacity: 1;
     }
   }
 </style>

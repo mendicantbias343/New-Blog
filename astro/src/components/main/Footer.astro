@@ -1,0 +1,62 @@
+---
+import Navigation from "./Navigation.astro";
+---
+
+<footer
+  class="content-grid mt-16 border-t border-spacing-1 border-[var(--accent-color)] pb-8"
+>
+  <div class="breakout mt-16">
+    <div class="flex flex-col-reverse md:flex-row md:justify-between gap-5">
+      <div class="flex flex-col gap-4">
+        <div>Thank you for reading!</div>
+        <div class="w-full md:w-[60%]">
+          ©️ <span> Rameez Kakodker</span> from the very beginning to this very moment
+          in time in <span>2024</span>
+        </div>
+
+        <div class="mt-8">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 103 103"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M102.475 51.5605C102.475 79.6429 79.7098 102.408 51.6274 102.408C23.5451 102.408 0.779785 79.6429 0.779785 51.5605C0.779785 23.4782 23.5451 0.712891 51.6274 0.712891C79.7098 0.712891 102.475 23.4782 102.475 51.5605ZM7.39601 51.5605C7.39601 75.9889 27.1991 95.792 51.6274 95.792C76.0558 95.792 95.8589 75.9889 95.8589 51.5605C95.8589 27.1322 76.0558 7.32911 51.6274 7.32911C27.1991 7.32911 7.39601 27.1322 7.39601 51.5605Z"
+              fill="var(--accent-color)"></path>
+            <path
+              d="M39.1782 33.3105L61.2078 31.654L73.6571 49.904L64.0768 69.8105L42.0472 71.4669L29.5979 53.2169L39.1782 33.3105Z"
+              fill="var(--accent-color)"></path>
+            <path
+              d="M60.5729 60.5691L59.4215 60.6557L58.9207 61.6962L55.2962 69.2274L54.7955 70.2678L55.4462 71.2217L60.1561 78.1263L60.8068 79.0802L61.9583 78.9936L70.2927 78.3669L71.4442 78.2803L71.9449 77.2398L75.5694 69.7087L76.0702 68.6682L75.4195 67.7143L70.7095 60.8098L70.0588 59.8559L68.9074 59.9425L60.5729 60.5691Z"
+              fill="var(--accent-color)"
+              stroke="var(--bg-color)"
+              stroke-width=" 4"></path>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <Navigation activeItem="about" />
+      </div>
+    </div>
+    <div class="text-right text-xs">
+      This page loaded in <span id="timingValue"></span>s (details)
+      <span class=""> </span>
+    </div>
+  </div>
+</footer>
+<script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      //TODO -> Show additional details like FCP, LCP and TTFB etc.
+      const duration =
+        window.performance.getEntriesByType("navigation")[0].duration;
+      document.getElementById("timingValue").textContent = (
+        Math.floor(duration) / 1000
+      )
+        .toString()
+        .slice(0, 5);
+    }, 0);
+  });
+</script>
