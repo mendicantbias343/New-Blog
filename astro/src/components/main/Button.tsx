@@ -15,18 +15,14 @@ export default function FilterButton({ content, type, isActive }) {
     isActive = !isActive;
     setActive(!active);
   }
-
+  const classNames = active
+    ? "active border filter-button"
+    : "border filter-button";
   return (
     <>
-      <button
-        type="button"
-        className={
-          active ? "active border filter-button" : "border filter-button"
-        }
-        onClick={handleClick}
-      >
+      <button type="button" class={classNames} onClick={handleClick}>
         <Icon type={type} />
-        <span className="block">{content}</span>
+        <span class="block">{content}</span>
       </button>
     </>
   );
