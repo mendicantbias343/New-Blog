@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { RiFilter3Fill, RiSortDesc, RiFileUserFill } from "react-icons/ri";
 
-interface Button {
+interface FilterButton {
   content: string;
   type: string;
   isActive: boolean;
+  className?: string;
 }
 
-export default function Button({ content, type, isActive }) {
+export default function FilterButton({ content, type, isActive }) {
   const [active, setActive] = useState(isActive);
 
   function handleClick() {
@@ -16,16 +17,18 @@ export default function Button({ content, type, isActive }) {
   }
 
   return (
-    <button
-      type="button"
-      className={
-        active ? "active border filter-button" : "border filter-button"
-      }
-      onClick={handleClick}
-    >
-      <Icon type={type} />
-      <span className="block">{content}</span>
-    </button>
+    <>
+      <button
+        type="button"
+        className={
+          active ? "active border filter-button" : "border filter-button"
+        }
+        onClick={handleClick}
+      >
+        <Icon type={type} />
+        <span className="block">{content}</span>
+      </button>
+    </>
   );
 }
 

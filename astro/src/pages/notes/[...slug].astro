@@ -41,15 +41,22 @@ const tags = post.notetags.map((tag) => tag.label);
 ---
 
 <Layout title={title} description={post.summary ? post.summary : title}>
-  <div class="mb-4">
-    <a href={prevPost.slug} class="flex flex-row gap-4 items-center">
-      <span class="flex flex-row gap-1 w-fit readprevnexttext">
-        <PrevIcons /> Read Previous</span
-      >
+  {
+    prevPost && (
+      <div class="mb-4">
+        <a
+          href={"/notes/" + prevPost.slug}
+          class="flex flex-row gap-4 items-center"
+        >
+          <span class="flex flex-row gap-1 w-fit readprevnexttext">
+            <PrevIcons /> Read Previous
+          </span>
 
-      <span class="opacity-35 line-clamp-2"> {prevPost.title}</span>
-    </a>
-  </div>
+          <span class="opacity-35 line-clamp-2"> {prevPost.title}</span>
+        </a>
+      </div>
+    )
+  }
   <article class="relative">
     <span class="dateholder absolute top-[4rem] left-[-4.2rem] rotate-[-90deg]">
       <FormattedDate date={post._createdAt} />
@@ -70,17 +77,24 @@ const tags = post.notetags.map((tag) => tag.label);
       {post.notetags.map((tag) => <span> #{tag.label} </span>)}
     </div>
   </article>
-  <div class="mt-8">
-    <a href={nextPost.slug} class="flex flex-row gap-4 items-center">
-      <span class="flex flex-row gap-1 w-fit readprevnexttext">
-        <NextIcon /> Read Next
-      </span>
+  {
+    nextPost && (
+      <div class="mt-8">
+        <a
+          href={"/notes/" + nextPost.slug}
+          class="flex flex-row gap-4 items-center"
+        >
+          <span class="flex flex-row gap-1 w-fit readprevnexttext">
+            <NextIcon /> Read Next
+          </span>
 
-      <span class="opacity-35 line-clamp-2 text-left">
-        {nextPost.title}
-      </span>
-    </a>
-  </div>
+          <span class="opacity-35 line-clamp-2 text-left">
+            {nextPost.title}
+          </span>
+        </a>
+      </div>
+    )
+  }
 </Layout>
 
 <style>
