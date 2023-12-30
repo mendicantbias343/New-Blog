@@ -1,34 +1,44 @@
 ---
 interface Props {
   activeItem: string;
+  navMenu: [
+    {
+      navLink: string;
+      navTitle: string;
+    },
+  ];
 }
-const { activeItem } = Astro.props;
+const { activeItem, navMenu } = await Astro.props;
 
-const navItems = ["About", "Articles", "Notes", "Series"];
-const navLinks = ["/about", "/articles", "/notes", "/series/"];
 const uri = Astro.url.pathname;
 ---
 
 <nav>
   <ul class="flex flex-row justify-start gap-5">
     {
-      navItems.map((item, index) => {
-        let showActive = false;
+      !navMenu
+        ? ""
+        : navMenu.map((item) => {
+            let showActive = false;
 
-        if (uri == navLinks[index]) {
-          showActive = true;
-        }
-        return (
-          <li>
-            <a
-              class:list={["not-italic", "fancy-blur", { active: showActive }]}
-              href={navLinks[index]}
-            >
-              {item}
-            </a>
-          </li>
-        );
-      })
+            if (uri == item.navTitle) {
+              showActive = true;
+            }
+            return (
+              <li>
+                <a
+                  class:list={[
+                    "not-italic",
+                    "fancy-blur",
+                    { active: showActive },
+                  ]}
+                  href={item.navLink}
+                >
+                  {item.navTitle}
+                </a>
+              </li>
+            );
+          })
     }
   </ul>
 </nav>

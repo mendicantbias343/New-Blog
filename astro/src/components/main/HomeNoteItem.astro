@@ -1,0 +1,111 @@
+---
+import { getImageObj } from "../../sanity/urlForImage";
+import FormattedDate from "../FormattedDate.astro";
+interface Props {
+  date: string;
+  type: string;
+  title: string;
+  body: string;
+  slug?: string;
+  readtime: string;
+  imgURL: URL;
+  index: number;
+}
+
+const { date, type, title, body, slug, readtime, imgURL, index } = Astro.props;
+---
+
+<a
+  class="grid-item"
+  href={type == "post" ? "/articles/" + slug : "/notes/" + slug}
+>
+  <div
+    class="blog-item flex flex-col flex-grow relative"
+    style={"--i:" + index}
+  >
+    {
+      imgURL && (
+        <div class="w-full  mb-4 fill overflow-hidden">
+          <img
+            class="min-w-fit p-0"
+            src={getImageObj(imgURL).width(400).height(250).fit("clip").url()}
+            alt={title}
+            width="100%"
+          />
+        </div>
+      )
+    }
+
+    <h2 class="leading-6 p-0">
+      {title}
+    </h2>
+    <p class="line-clamp-3 not-italic">{body}</p>
+
+    <div class="mt-4 flex flex-row justify-between items-center">
+      <span class="text-xs">
+        <FormattedDate date={date} display={true} />
+      </span>
+      <span class="text-xs">{readtime ? readtime : 2} mins read</span>
+    </div>
+    <div class="mt-2 read-more-icon flex flex-row justify-start gap-2">
+      <span> Continue reading</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="var(--accent-color)"
+        class="w-6 h-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"></path>
+      </svg>
+    </div>
+  </div>
+</a>
+<style>
+  a.grid-item {
+    display: block;
+    position: relative;
+    transition: transform 400ms ease;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  a.grid-item::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1rem;
+    height: 100%;
+    width: 0px;
+    background-color: var(--accent-color);
+  }
+  .grid-item:hover {
+    transform: translateX(0.5rem);
+  }
+  .grid-item:hover::after {
+    width: 5px;
+  }
+
+  .read-more-icon {
+    transition: transform 400ms ease-in-out;
+  }
+  .blog-item:hover .read-more-icon,
+  .read-more-icon:hover {
+    transform: translateX(1.5rem);
+  }
+  svg,
+  path {
+    color: var(--text-color);
+    /* OR */
+    fill: var(--text-color);
+  }
+
+  @media (max-width: 768px) {
+    .blog-item {
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,0 +1,152 @@
+---
+import { getPosts } from "../../sanity/api";
+import { sanityClient } from "sanity:client";
+import PortableText from "../portableText/PortableText.astro";
+import HomeArticleItem from "./HomeArticleItem.astro";
+import HomeNoteItem from "./HomeNoteItem.astro";
+
+interface Props {
+  category?: string;
+  limit?: string;
+  pagination?: number;
+  isSummary?: boolean;
+  sortBy?: string;
+  type?: string;
+}
+
+interface Post {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+}
+
+interface siteSettings {
+  navMenu: [
+    {
+      navLink: string;
+      navTitle: string;
+    },
+  ];
+  person: Object;
+  title: string;
+  url: string;
+  introtext: Object;
+}
+
+const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
+
+// const typess = type == "articles" ? "post" : type == "notes" ? "note" : "";
+
+const postData = await getPosts("post");
+const noteData = await getPosts("note");
+const siteSettings: siteSettings = await sanityClient.fetch(
+  `*[_id == "siteSettings"][0]`
+);
+---
+
+<div class="homegrid">
+  <div class="articles">
+    <div class="intro-block">
+      <span class="text-3xl">👋</span>
+      <PortableText portableText={siteSettings.introtext} />
+      <span class="block md:hidden">
+        <h2>Latest Articles</h2>
+        <span class="text-xs"
+          >(Long form content that goes indepth into a topic)</span
+        >
+      </span>
+    </div>
+    {
+      postData.map((post, index) => (
+        <HomeArticleItem
+          title={post.title}
+          body={post.summary}
+          date={post._createdAt}
+          imgURL={post.image}
+          readingTime={post.readtime}
+          type={post._type}
+          index={index}
+          slug={post.slug}
+        />
+      ))
+    }
+  </div>
+  <div class="notes">
+    <div>
+      <h2 class="text-xl p-0">Notes For You (and me):</h2>
+    </div>
+    {
+      noteData.map((post, index) => (
+        <HomeNoteItem
+          title={post.title}
+          body={post.summary}
+          date={post._createdAt}
+          imgURL={post.image}
+          readtime={post.readtime}
+          type={post._type}
+          index={index}
+          slug={post.slug}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .intro-block {
+    border: 0.5rem solid hsl(var(--accent-hue), 50%, 45%, 0.5);
+    padding: 1rem;
+  }
+  .homegrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+  .articles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1rem, 10vw + 1rem, 3rem);
+  }
+  .notes {
+    border-left: 1px dashed hsl(var(--accent-hue), 50%, 45%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2rem;
+    padding-left: 2rem;
+  }
+  @media (max-width: 1200px) {
+    .homegrid {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .articles {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  @media (max-width: 768px) {
+    .homegrid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .articles {
+      padding-left: 0;
+
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .notes {
+      border-top: 1px dashed var(--accent-color);
+      margin-top: 1rem;
+      padding-top: 1rem;
+      padding-left: 0px;
+      border-left: none;
+    }
+    .intro-block {
+      border: none;
+      padding: 0;
+    }
+  }
+</style>

@@ -31,8 +31,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const prevPost: Note = Astro.props[0];
-const nextPost: Note = Astro.props[2];
+const nextPost: Note = Astro.props[0];
+const prevPost: Note = Astro.props[2];
 const post: Note = Astro.props[1];
 
 const title = "Reading Note: " + post.title + " - mendicant bias";
@@ -59,7 +59,7 @@ const tags = post.notetags.map((tag) => tag.label);
   }
   <article class="relative">
     <span class="dateholder absolute top-[4rem] left-[-4.2rem] rotate-[-90deg]">
-      <FormattedDate date={post._createdAt} />
+      <FormattedDate date={post._createdAt} display={true} />
     </span>
     <span class="text-xs uppercase">
       Approx {post.readingtime ? post.readingtime : 2} mins reading time</span

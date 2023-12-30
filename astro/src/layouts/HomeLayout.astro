@@ -8,6 +8,8 @@ interface Props {
   description: string;
 }
 
+const siteSettings = await sanityClient.fetch(`*[_id == "siteSettings"]`);
+
 const { title, description } = Astro.props;
 ---
 
@@ -16,7 +18,10 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <BaseHead title={title} description={description} />
+    <BaseHead
+      title={title ? title : siteSettings.title}
+      description={description ? description : siteSettings.description}
+    />
     <script is:inline>
       const hueVal = randomIntFromInterval(0, 255);
       localStorage.setItem("currentHue", hueVal.toString());

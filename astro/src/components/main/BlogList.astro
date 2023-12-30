@@ -5,6 +5,8 @@ import Icon from "astro-icon";
 
 import BlogItem from "./BlogItem.astro";
 import { getPosts } from "../../sanity/api";
+import HomeArticleItem from "./HomeArticleItem.astro";
+import HomeNoteItem from "./HomeNoteItem.astro";
 interface Props {
   category?: string;
   limit?: string;
@@ -59,7 +61,7 @@ const data = await getPosts(type);
     <>
       <div class="breakout">
         <h1>
-          Showing {sortBy} {type == "post" ? "article" : type}s:
+          Showing {sortBy + " "} {type == "post" ? "article" : type}s:
         </h1>
       </div>
     </>
@@ -70,17 +72,30 @@ const data = await getPosts(type);
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-0 gap-y-16 md:gap-x-16 lg:gap-x-16 xl:gap-x-32 grid-flow-row-dense main-grid"
 >
   {
-    data.map((post, index) => (
-      <BlogItem
-        title={post.title}
-        body={post.summary}
-        date={post._createdAt}
-        imgURL={post.image}
-        readingTime={post.readtime}
-        type={post._type}
-        index={index}
-        slug={post.slug}
-      />
-    ))
+    data.map((post, index) =>
+      type === "post" ? (
+        <HomeArticleItem
+          title={post.title}
+          body={post.summary}
+          date={post._createdAt}
+          imgURL={post.image}
+          readingTime={post.readtime}
+          type={post._type}
+          index={index}
+          slug={post.slug}
+        />
+      ) : (
+        <HomeNoteItem
+          title={post.title}
+          body={post.summary}
+          date={post._createdAt}
+          imgURL={post.image}
+          readtime={post.readtime}
+          type={post._type}
+          index={index}
+          slug={post.slug}
+        />
+      )
+    )
   }
 </div>

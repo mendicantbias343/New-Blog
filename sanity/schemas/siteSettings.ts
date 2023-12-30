@@ -77,6 +77,11 @@ export default defineType({
         },
       ],
     },
+    defineField({
+      name: 'introtext',
+      title: 'Intro Text For Homepage',
+      type: 'blockContent',
+    }),
     // add homepage elements
   ],
 })

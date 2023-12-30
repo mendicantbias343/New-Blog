@@ -2,40 +2,51 @@
 import Icon from "astro-icon";
 import Navigation from "../main/Navigation.astro";
 import ThemeSwitcher from "./ThemeSwitcher.astro";
+import { sanityClient } from "sanity:client";
+
+interface siteSettings {
+  navMenu: [
+    {
+      navLink: string;
+      navTitle: string;
+    },
+  ];
+  person: Object;
+  title: string;
+  url: string;
+}
 
 interface Props {
   active: string;
 }
-const { active } = Astro.props;
 
+const siteSettings: siteSettings = await sanityClient.fetch(
+  `*[_id == "siteSettings"][0]`
+);
+const { active } = Astro.props;
 // TODO - Fetch the navigation links from Sanity from Sanity
 ---
 
-<div class="w-full h-4 accent top-bar"></div>
+<div class="w-full h-2 accent top-bar"></div>
 <div class="content-grid">
   <header
     class="flex flex-col-reverse justify-center breakout mt-4 mb-4 md:flex-col"
   >
     <!-- menu -->
     <div class="flex flex-row justify-between mt-8 menu">
-      <Navigation activeItem="about" />
+      <Navigation activeItem={active} navMenu={await siteSettings.navMenu} />
       <div class="flex flex-row justify-start gap-5">
         <div class="w-5"><Icon pack="ri" name="search-line" /></div>
-        <div class="w-5">
-          <a class="fancy-blur" target="_blank" href=""
-            ><Icon pack="ri" name="instagram-line" /></a
-          >
-        </div>
-        <div class="w-5">
-          <a class="fancy-blur" target="_blank" href="">
-            <Icon pack="ri" name="medium-line" /></a
-          >
-        </div>
-        <div class="w-5">
-          <a class="fancy-blur" target="_blank" href="">
-            <Icon pack="ri" name="linkedin-line" /></a
-          >
-        </div>
+        {
+          Object.entries(siteSettings.person).map((m) => (
+            <div class="w-5">
+              <a class="fancy-blur block" target="_blank" href={m[1]}>
+                <Icon pack="ri" name={m[0] + "-line"} />
+              </a>
+            </div>
+          ))
+        }
+
         <div class="w-5" style="cursor: pointer;">
           <ThemeSwitcher />
         </div>

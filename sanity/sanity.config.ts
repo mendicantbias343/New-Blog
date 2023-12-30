@@ -44,12 +44,9 @@ export default defineConfig({
   document: {
     actions: (prev, context) =>
       prev.map((originalAction) => {
-        console.log('Operation is ' + originalAction.action)
         return originalAction.action === 'publish'
           ? createAsyncPublishAction(originalAction, context)
-          : originalAction.action === 'unpublish'
-            ? createAsyncPublishAction(originalAction, context)
-            : originalAction
+          : originalAction
       }),
   },
 })

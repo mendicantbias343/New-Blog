@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/HomeLayout.astro";
+import { sanityClient } from "sanity:client";
+import PortableText from "../components/portableText/PortableText.astro";
+
+interface Page {
+  title: string;
+  body: Object;
+  summary: string;
+}
+
+const about: Page = await sanityClient.fetch(
+  `*[_type == "pages" && _id == "1b9190ae-abba-47c5-933c-4112359416bb"][0]`
+);
+---
+
+<Layout title={about.title} description={about.summary}>
+  <div class="flex flex-col text-left relative breakout lg:mt-8">
+    <PortableText portableText={about.body} />
+  </div>
+</Layout>

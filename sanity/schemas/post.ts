@@ -67,7 +67,6 @@ export default defineType({
       name: 'readtime',
       title: 'Reading Time',
       type: 'number',
-      initialValue: 5,
     }),
   ],
 

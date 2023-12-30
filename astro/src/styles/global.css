@@ -2,7 +2,7 @@
 
 :root {
   --padding-inline: 1rem;
-  --content-max-width: 72ch;
+  --content-max-width: 70ch;
   --breakout-max-width: 1400px;
 
   --breakout-size: calc(
@@ -15,7 +15,7 @@
   --text-color-contrast: #fff;
   --link-opacity-init: 0.8;
   --button-border-color: rgba(0, 0, 0, 0.6);
-  --bg-color: #fcf6f6;
+  --bg-color: #f4eee8;
   /* Fonts */
   --fs-xl: 1.7rem;
   --fs-600: 1.5rem;
@@ -38,7 +38,7 @@ h1 {
     Cambria, serif;
   font-weight: 900;
   font-size: var(--fs-xl);
-  font-style: italic !important;
+  font-style: italic;
   letter-spacing: 0.01ch;
 }
 h2 {
@@ -46,7 +46,7 @@ h2 {
     Cambria, serif;
   font-weight: bold;
   font-size: var(--fs-600);
-  font-style: normal !important;
+  font-style: normal;
 }
 
 .content-grid {
@@ -96,7 +96,7 @@ a {
   opacity: var(--link-opacity-init);
   position: relative;
   transition: opacity 0.4s linear;
-  display: block;
+  display: inline-block;
 }
 a:hover {
   opacity: 1;
@@ -224,8 +224,7 @@ a.fancy-blur:hover::after {
 .filter-button:hover {
   background-color: var(--text-color);
   color: var(--text-color-contrast);
-  box-shadow:
-    rgba(17, 17, 26, 0.05) 0px 0px 16px,
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 0px 16px,
     rgba(17, 17, 26, 0.205) 0px 4px 32px;
   transform: translateY(-2px);
 }
@@ -250,27 +249,28 @@ a.fancy-blur:hover::after {
   width: 1rem;
   height: 1rem;
 }
-
-div.main-content h2,
-div.main-content h3,
-div.main-content h4 {
+main h1,
+main h2,
+main h3,
+main h4 {
+  font-style: normal;
   padding-top: 1rem;
   display: block;
 }
 
-.main-content h2 {
+main h2 {
   font-weight: bold;
   font-size: var(--fs-600);
 }
 
-.main-content img {
+main img {
   padding-top: 1rem;
   padding-bottom: 1rem;
 
   display: block;
 }
 
-.main-content blockquote {
+main blockquote {
   background: var(--accent-color);
   padding: 1.75rem 1rem 1.75rem 1rem;
   margin-top: 1rem;
@@ -279,23 +279,22 @@ div.main-content h4 {
   color: var(--text-color-contrast);
 }
 
-.dark .main-content blockquote {
+.dark main blockquote {
   background: var(--accent-color);
   opacity: 0.9;
   transition: opacity 400ms ease-in-out;
 }
-.dark .main-content blockquote:hover {
+.dark main blockquote:hover {
   opacity: 1;
 }
 
-.main-content p {
+main p {
   margin-top: 1vh;
 }
-.main-content ul {
+main ul {
   margin-top: 1.125rem;
 }
-
-.main-content li {
+main li {
   margin-top: 1.125rem;
   margin-left: 1.125rem;
   list-style-type: decimal;

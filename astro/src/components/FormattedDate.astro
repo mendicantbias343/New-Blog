@@ -1,18 +1,14 @@
 ---
 interface Props {
   date: string;
+  display: boolean;
 }
 
-const { date } = Astro.props;
+const { date, display } = Astro.props;
 const jsDate = new Date(date);
+import dayjs from "dayjs";
 ---
 
 <time datetime={jsDate.toISOString()}>
-  {
-    jsDate.toLocaleDateString("en-us", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    })
-  }
+  {display && dayjs(date).format("MMM D, YYYY")}
 </time>

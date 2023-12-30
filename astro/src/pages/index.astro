@@ -1,11 +1,14 @@
 ---
 import Layout from "../layouts/HomeLayout.astro";
-import BlogList from "../components/main/BlogList.astro";
+import HomeItemsList from "../components/main/HomeItemsListing.astro";
 ---
 
-<Layout title="About Me" description="Lorem ipsum dolor sit amet">
+<Layout
+  title="Home - Mendicant Bias - A blog from Rameez Kakodker"
+  description=""
+>
   <!-- Iterate through the blog posts -->
-  <div class="mt-8 flex flex-col text-left gap-10 relative breakout">
-    <BlogList limit="4" category="" sortBy="latest" />
+  <div class="flex flex-col text-left gap-10 relative breakout lg:mt-8">
+    <HomeItemsList limit="4" category="" sortBy="latest" />
   </div>
 </Layout>

@@ -1,5 +1,22 @@
 ---
 import Navigation from "./Navigation.astro";
+import { sanityClient } from "sanity:client";
+
+interface siteSettings {
+  navMenu: [
+    {
+      navLink: string;
+      navTitle: string;
+    },
+  ];
+  person: Object;
+  title: string;
+  url: string;
+}
+
+const siteSettings: siteSettings = await sanityClient.fetch(
+  `*[_id == "siteSettings"][0]`
+);
 ---
 
 <footer
@@ -10,8 +27,8 @@ import Navigation from "./Navigation.astro";
       <div class="flex flex-col gap-4">
         <div>Thank you for reading!</div>
         <div class="w-full md:w-[60%]">
-          ©️ <span> Rameez Kakodker</span> from the very beginning to this very moment
-          in time in <span>2024</span>
+          ©️ <span> Rameez Kakodker</span> from the very beginning to this very
+          moment in time in <span>2024</span>
         </div>
 
         <div class="mt-8">
@@ -37,7 +54,7 @@ import Navigation from "./Navigation.astro";
         </div>
       </div>
       <div>
-        <Navigation activeItem="about" />
+        <Navigation activeItem="about" navMenu={await siteSettings.navMenu} />
       </div>
     </div>
     <div class="text-right text-xs">

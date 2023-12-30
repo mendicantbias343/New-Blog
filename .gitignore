@@ -53,3 +53,5 @@ sanity/*.tsbuildinfo
 
 # Dotenv and similar local-only files
 sanity/*.local
+
+node_modules

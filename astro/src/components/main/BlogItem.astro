@@ -1,5 +1,5 @@
 ---
-import { urlForImage } from "../../sanity/urlForImage";
+import { getImageObj } from "../../sanity/urlForImage";
 import FormattedDate from "../FormattedDate.astro";
 interface Props {
   date: string;
@@ -16,7 +16,10 @@ const { date, type, title, body, slug, readingTime, imgURL, index } =
   Astro.props;
 ---
 
-<a href={type == "post" ? "/articles/" + slug : "/notes/" + slug}>
+<a
+  class="grid-item"
+  href={type == "post" ? "/articles/" + slug : "/notes/" + slug}
+>
   <div
     class="blog-item flex flex-col flex-grow relative md:ml-10 xl:ml-0"
     style={"--i:" + index}
@@ -24,18 +27,23 @@ const { date, type, title, body, slug, readingTime, imgURL, index } =
     <div
       class="md:absolute md:top-[34px] md:left-[-4rem] md:rotate-[-90deg] not-italic capitalize"
     >
-      <FormattedDate date={date} />
+      <FormattedDate date={date} display={true} />
     </div>
 
     {
       imgURL && (
-        <div class="w-full h-64 mb-4 fill">
-          <img class="h-64" src={urlForImage(imgURL)} alt={title} />
+        <div class="w-full  mb-4 fill overflow-hidden">
+          <img
+            class="min-w-fit p-0"
+            src={getImageObj(imgURL).width(400).height(250).fit("clip").url()}
+            alt={title}
+            width="100%"
+          />
         </div>
       )
     }
 
-    <h2 class="leading-6">
+    <h2 class="leading-6 p-0">
       {
         type.toLowerCase() === "note" ? (
           <svg
@@ -70,7 +78,7 @@ const { date, type, title, body, slug, readingTime, imgURL, index } =
       }
       {title}
     </h2>
-    <p class="line-clamp-5 not-italic">{body}</p>
+    <p class="line-clamp-3 not-italic">{body}</p>
 
     <div class="mt-4 flex flex-row justify-start items-center">
       <span class="w-[35%] h-[2px] bg-[var(--accent-color)]"></span>
@@ -203,11 +211,6 @@ const { date, type, title, body, slug, readingTime, imgURL, index } =
     color: var(--text-color);
     /* OR */
     fill: var(--text-color);
-  }
-  .fill {
-  }
-  .fill img {
-    object-fit: cover;
   }
 
   @media (max-width: 768px) {
