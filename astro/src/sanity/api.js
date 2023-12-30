@@ -1,9 +1,9 @@
-import { useSanityClient, groq } from "astro-sanity";
+import { sanityClient } from "sanity:client";
 
 export async function getPosts(types) {
   let query = "";
   if (types == "post") {
-    query = groq`*[_type == "post"] {
+    query = `*[_type == "post"] {
       _createdAt,
         "cats":categories[]->{title, slug},
         title,
@@ -15,7 +15,7 @@ export async function getPosts(types) {
         _type
     } | order(_createdAt desc)`;
   } else if (types == "note") {
-    query = groq`*[_type == "note"] {
+    query = `*[_type == "note"] {
       title,
     _createdAt,
     _id,
@@ -28,7 +28,7 @@ export async function getPosts(types) {
     } | order(_createdAt desc)`;
   } else {
     //homepage view
-    query = groq`*[_type == "post" || _type=="note"] {
+    query = `*[_type == "post" || _type=="note"] {
       _createdAt,
         title,
         "slug" : slug.current,
@@ -40,18 +40,18 @@ export async function getPosts(types) {
     } | order(_createdAt desc)`;
   }
 
-  const posts = await useSanityClient().fetch(query);
+  const posts = await sanityClient.fetch(query);
   return posts;
 }
 
 export async function getSlugs(contentType) {
   const query =
-    groq`*[_type == "` +
+    `*[_type == "` +
     contentType +
     `"] {
     "slug":slug.current
   }`;
-  const slugList = await useSanityClient().fetch(query);
+  const slugList = await sanityClient.fetch(query);
   return slugList.map((slug) => slug.slug);
 }
 

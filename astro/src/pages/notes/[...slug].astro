@@ -1,10 +1,9 @@
 ---
-import PortableText from "../../components/sanityPortableText.astro";
+import PortableText from "../../components/PortableText.astro";
 import { getPosts } from "../../sanity/api";
 import Layout from "../../layouts/HomeLayout.astro";
-import { urlForImage } from "../../sanity/urlForImage";
+
 import FormattedDate from "../../components/FormattedDate.astro";
-import { number, object, string } from "astro/zod";
 import PrevIcons from "../../components/PrevIcon.astro";
 import NextIcon from "../../components/NextIcon.astro";
 
@@ -14,10 +13,14 @@ interface Note {
   _id: string;
   body: Array<Object>;
   slug: string;
-  notetags: Array<Object>;
+  notetags: Array<Tag>;
   _type: string;
   readingtime: number;
   summary: string;
+}
+
+interface Tag {
+  label: string;
 }
 
 export async function getStaticPaths() {

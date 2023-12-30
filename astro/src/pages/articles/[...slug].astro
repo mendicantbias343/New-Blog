@@ -1,19 +1,39 @@
 ---
-import PortableText from "../../components/sanityPortableText.astro";
+import PortableText from "../../components/PortableText.astro";
 import { getPosts } from "../../sanity/api";
 import Layout from "../../layouts/HomeLayout.astro";
 import { urlForImage } from "../../sanity/urlForImage";
 import FormattedDate from "../../components/FormattedDate.astro";
+
+interface Article {
+  title: string;
+  _createdAt: string;
+  _id: string;
+  body: Array<Object>;
+  image: string;
+  slug: string;
+  cats: Array<Cats>;
+  _type: string;
+  readtime: number;
+  summary: string;
+}
+interface Cats {
+  title: string;
+  slug: {
+    current: string;
+  };
+}
+
 export async function getStaticPaths() {
   const data = await getPosts("post");
 
-  return data.map((post) => ({
+  return data.map((post: Article) => ({
     params: { slug: post.slug },
     props: post,
   }));
 }
 
-const post = Astro.props;
+const post: Article = Astro.props;
 
 const title = "Reading " + post.title + " - mendicant bias";
 const imgURL =
@@ -21,7 +41,7 @@ const imgURL =
   urlForImage(post.image) +
   "); background-size: cover; background-repeat: no-repeat;background-position: center;";
 
-const cats = post.cats.map((cat) => {
+const cats = post.cats.map((cat: Cats) => {
   return {
     category: cat.title,
     slug: cat.slug.current,

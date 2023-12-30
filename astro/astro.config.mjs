@@ -2,17 +2,16 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
-
-import sanity from "astro-sanity";
+import { sanityIntegration } from "@sanity/astro";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  site: "https://mendicantbias.com",
   integrations: [
     sitemap(),
     tailwind(),
     react(),
-    sanity({
+    sanityIntegration({
       projectId: "1s3iny7g",
       dataset: "production",
       apiVersion: "2021-03-25",
