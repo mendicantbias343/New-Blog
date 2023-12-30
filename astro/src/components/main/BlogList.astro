@@ -27,7 +27,7 @@ const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
 const data = await getPosts(type);
 ---
 
-<div class="flex flex-row gap-4 flex-wrap justify-center md:justify-start">
+<!-- <div class="flex flex-row gap-4 flex-wrap justify-center md:justify-start">
   {
     !type && (
       <>
@@ -54,8 +54,7 @@ const data = await getPosts(type);
     isActive={false}
   />
   <Button client:only="react" type="sort" content="Latest" isActive={true} />
-</div>
-{
+</div> -->{
   type && (
     <>
       <div class="breakout">

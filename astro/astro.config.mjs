@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     tailwind(),
-    react(),
+    react({ experimentalReactChildren: true }),
     sanityIntegration({
       projectId: "1s3iny7g",
       dataset: "production",

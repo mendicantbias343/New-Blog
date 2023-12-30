@@ -20,9 +20,9 @@ export default function FilterButton({ content, type, isActive }) {
     : "border filter-button";
   return (
     <>
-      <button type="button" class={classNames} onClick={handleClick}>
+      <button type="button" className={classNames} onClick={handleClick}>
         <Icon type={type} />
-        <span class="block">{content}</span>
+        <span className="block">{content}</span>
       </button>
     </>
   );
