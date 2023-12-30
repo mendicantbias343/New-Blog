@@ -41,12 +41,14 @@ const imgURL =
   urlForImage(post.image) +
   "); background-size: cover; background-repeat: no-repeat;background-position: center;";
 
-const cats = post.cats.map((cat: Cats) => {
-  return {
-    category: cat.title,
-    slug: cat.slug.current,
-  };
-});
+const cats = !post.cats
+  ? null
+  : post.cats.map((cat: Cats) => {
+      return {
+        category: cat.title,
+        slug: cat.slug.current,
+      };
+    });
 ---
 
 <Layout title={title} description={post.summary}>
@@ -57,9 +59,10 @@ const cats = post.cats.map((cat: Cats) => {
       <div class="flex flex-col justify-center">
         <div>
           {
-            cats.map((cat) => {
-              return <a href={cat.slug}>{cat.category}</a>;
-            })
+            cats &&
+              cats.map((cat) => {
+                return <a href={cat.slug}>{cat.category}</a>;
+              })
           }
         </div>
         <h1 class="block opacity-100">{post.title}</h1>
