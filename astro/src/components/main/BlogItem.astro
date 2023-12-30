@@ -26,14 +26,11 @@ const { date, type, title, body, slug, readingTime, imgURL, index } =
     >
       <FormattedDate date={date} />
     </div>
+
     {
       imgURL && (
         <div class="w-full h-64 mb-4 fill">
-          <img
-            class="h-64"
-            src={imgURL ? urlForImage(imgURL) : ""}
-            alt={title}
-          />
+          <img class="h-64" src={urlForImage(imgURL)} alt={title} />
         </div>
       )
     }
