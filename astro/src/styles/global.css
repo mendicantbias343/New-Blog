@@ -299,3 +299,18 @@ main li {
   margin-left: 1.125rem;
   list-style-type: decimal;
 }
+
+.astro-social-share a {
+  display: block;
+  width: 1.25rem;
+  transition: transform 400ms ease;
+}
+.social-share-btn svg {
+  color: var(--text-color);
+  /* OR */
+  fill: var(--text-color);
+}
+
+.astro-social-share a:hover {
+  transform: scale(1.125);
+}

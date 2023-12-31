@@ -4,6 +4,7 @@ import { getPosts } from "../../sanity/api";
 import Layout from "../../layouts/HomeLayout.astro";
 import { urlForImage } from "../../sanity/urlForImage";
 import FormattedDate from "../../components/FormattedDate.astro";
+import Sharing from "../../components/main/Sharing.astro";
 
 interface Article {
   title: string;
@@ -81,6 +82,7 @@ const cats = !post.cats
   </div>
 
   <PortableText portableText={post.body} />
+  <Sharing description={post.summary} via="@irumk" title={post.title} />
 </Layout>
 
 <style>
@@ -123,4 +125,19 @@ const cats = !post.cats
     position: relative;
     z-index: 1;
   } */
+  SocialShare {
+    display: flex;
+    flex-direction: row;
+  }
+
+  SocialShare a {
+    width: 100%;
+    display: block;
+  }
+
+  svg {
+    color: var(--text-color);
+    /* OR */
+    fill: var(--text-color);
+  }
 </style>

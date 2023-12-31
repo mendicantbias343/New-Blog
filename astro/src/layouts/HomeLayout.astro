@@ -1,7 +1,9 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/main/Footer.astro";
 import Header from "../components/main/Header.astro";
+
 import { sanityClient } from "sanity:client";
 interface Props {
   title: string;
@@ -22,75 +24,13 @@ const { title, description } = Astro.props;
       title={title ? title : siteSettings.title}
       description={description ? description : siteSettings.description}
     />
-    <script is:inline>
-      const hueVal = randomIntFromInterval(0, 255);
-      localStorage.setItem("currentHue", hueVal.toString());
-      document.documentElement.style.cssText += "--accent-hue: " + hueVal + ";";
-
-      function randomIntFromInterval(min, max) {
-        // min and max included
-        return Math.floor(Math.random() * (max - min + 1) + min);
-      }
-      const theme = (() => {
-        if (
-          typeof localStorage !== "undefined" &&
-          localStorage.getItem("theme")
-        ) {
-          return localStorage.getItem("theme");
-        }
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          return "dark";
-        }
-        return "light";
-      })();
-
-      const setCSSForDarkTheme = () => {
-        let hueVal = localStorage.getItem("currentHue");
-        document.documentElement.style.cssText =
-          "--accent-hue: " +
-          hueVal +
-          "; --accent-color: hsl(" +
-          hueVal +
-          ", 85%, 80%); --text-color: hsl(215deg 30% 80%); --text-color-contrast:rgb(56, 56, 56); --button-border-color: rgba(255, 255, 255, 0.6); --bg-color: #0f172a";
-      };
-
-      const setCSSForLightTheme = () => {
-        current = "--accent-hue: " + localStorage.getItem("currentHue");
-        document.documentElement.style.cssText = current;
-      };
-
-      if (theme === "light") {
-        document.documentElement.classList.remove("dark");
-        setCSSForLightTheme();
-      } else {
-        document.documentElement.classList.add("dark");
-        setCSSForDarkTheme();
-      }
-
-      window.localStorage.setItem("theme", theme);
-
-      const handleToggleClick = () => {
-        const element = document.documentElement;
-        element.classList.toggle("dark");
-        const isDark = element.classList.contains("dark");
-        if (isDark) {
-          setCSSForDarkTheme();
-        } else {
-          setCSSForLightTheme();
-        }
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      };
-      window.addEventListener("load", () => {
-        document
-          .getElementById("themeToggle")
-          .addEventListener("click", handleToggleClick);
-      });
-    </script>
+    <script is:inline src="/darkmode.js"></script>
+    <ViewTransitions />
   </head>
 
   <body>
-    <Header active="" />
-    <main class="content-grid mt-8">
+    <Header active="" transition:animate="none" />
+    <main class="content-grid mt-8" transition:animate="fade">
       <slot />
     </main>
     <Footer />

@@ -30,3 +30,7 @@ Detailed list of tasks done
 [] Homepage - Header conneceted to Sanity
 [] Footer - pending connection with sanity
 [] Homepage - 
+
+
+## Sources + inspiration + blatant code copy
+https://github.com/silent1mezzo/mckerlie.com/blob/main/src/config.ts

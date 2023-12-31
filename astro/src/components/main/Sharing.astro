@@ -1,0 +1,54 @@
+---
+import {
+  FacebookShareButton,
+  HackerNewsShareButton,
+  LinkedInShareButton,
+  RedditShareButton,
+  TwitterShareButton,
+  SocialShare,
+  EmailShareButton,
+} from "astro-social-share";
+
+const DEFAULT_COMPONENTS = [
+  TwitterShareButton,
+  FacebookShareButton,
+  HackerNewsShareButton,
+  LinkedInShareButton,
+  RedditShareButton,
+  EmailShareButton,
+];
+
+const {
+  buttons = DEFAULT_COMPONENTS,
+  url = Astro.request.url,
+  title,
+  description,
+  via,
+} = Astro.props;
+---
+
+<style>
+  .astro-social-share {
+    border-top: 1px dotted hsl(var(--accent-hue), 60%, 60%);
+    margin-top: 2rem;
+    padding-top: 1rem;
+  }
+  a {
+    display: block;
+  }
+  svg {
+    color: var(--text-color);
+    /* OR */
+    fill: var(--text-color);
+  }
+</style>
+<div class="astro-social-share flex-col flex gap-4">
+  <div class="m-0 p-0">Share this:</div>
+  <div class="flex flex-row gap-2 w-7/12 justify-start">
+    {
+      buttons.map((Button) => (
+        <Button url={url} description={description} via={via} title={title} />
+      ))
+    }
+  </div>
+</div>
