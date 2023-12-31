@@ -6,6 +6,7 @@ import Layout from "../../layouts/HomeLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import PrevIcons from "../../components/PrevIcon.astro";
 import NextIcon from "../../components/NextIcon.astro";
+import Sharing from "../../components/main/Sharing.astro";
 
 interface Note {
   title: string;
@@ -76,6 +77,7 @@ const tags = post.notetags.map((tag) => tag.label);
     <div class="flex flex-row gap-3 opacity-70">
       {post.notetags.map((tag) => <span> #{tag.label} </span>)}
     </div>
+    <Sharing description={post.summary} via="@irumk" title={post.title} />
   </article>
   {
     nextPost && (
