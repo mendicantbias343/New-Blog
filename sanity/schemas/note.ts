@@ -17,8 +17,7 @@ export default defineType({
       type: 'slug',
       options: {
         source: (doc: Document) => {
-          const date = formatDate(new Date(), 'YYYY-MMM-DD')
-          return `/notes/${date}/${doc.title}`
+          return `/${doc.title}`
         },
         slugify: (input: any) => input.toLowerCase().replace(/\s+/g, '-').slice(0, 200),
       },
