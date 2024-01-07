@@ -3,26 +3,24 @@ import { ViewTransitions } from "astro:transitions";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/main/Footer.astro";
 import Header from "../components/main/Header.astro";
+import { getSiteSettings } from "../sanity/api";
 
-import { sanityClient } from "sanity:client";
 interface Props {
   title: string;
-  description: string;
+  description?: string;
 }
 
-const siteSettings = await sanityClient.fetch(`*[_id == "siteSettings"]`);
-
 const { title, description } = Astro.props;
+const settings = await getSiteSettings();
 ---
 
-<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <BaseHead
-      title={title ? title : siteSettings.title}
-      description={description ? description : siteSettings.description}
+      title={title ? title : settings.title}
+      description={description ? description : settings.description}
     />
     <script is:inline src="/darkmode.js"></script>
     <ViewTransitions />

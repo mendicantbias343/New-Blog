@@ -1,12 +1,15 @@
 ---
 import { PortableText as PortableTextInternal } from "astro-portabletext";
-import PortableTextImage from "./Image.astro";
-
+import PortableTextImage from "./ImageBlock.astro";
+import Heading from "../portableText/Heading.astro";
 const { portableText } = Astro.props;
 
 const components = {
   type: {
     image: PortableTextImage,
+  },
+  block: {
+    h2: Heading,
   },
 };
 ---

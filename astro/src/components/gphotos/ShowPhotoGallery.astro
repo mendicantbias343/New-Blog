@@ -1,0 +1,84 @@
+---
+import { getImagesWithEverything } from "../../pages/photos/index";
+import { Image } from "astro:assets";
+
+const xls = await getImagesWithEverything();
+
+const { count } = Astro.props;
+
+const imgs = count ? xls.reverse().slice(0, count) : xls.reverse();
+const rootURL =
+  "https://photos.google.com/share/AF1QipO7Kruo1A8BFFVR2eMie6kdXr98hssUwWyKiMY4zfhgVkr_jtFVs1yJT-oYWmwEzw/photo/";
+const urlAppned = "?key=MDVmMGd0NHZ2ejZVZnUyLUtoUjZUdTdmNXdQUGRR";
+---
+
+<div class="flex flex-col breakout mt-16">
+  <div class="flex flex-row justify-start flex-grow items-center gap-8">
+    <h2 class="w-fit min-w-fit p-0 italic">Latest Photos</h2>
+    <div class="h-[1px] bg-[var(--accent-color)] w-full"></div>
+    <span class="w-fit min-w-fit p-0">
+      <a href="/photos/"> View All</a>
+    </span>
+  </div>
+
+  <div
+    class="grid grid-flow-row grid-cols-2 mt-16 gap-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+  >
+    {
+      imgs.map((img) => {
+        let finalURL = `${rootURL}${img.uid}${urlAppned}`;
+        let width = Math.floor((img.width / img.height) * 800);
+        let height = Math.floor((img.height / img.width) * 800);
+        if (img.width > img.height) {
+          //wide image - col-span-2 it
+          return (
+            <div class="singleImage flex flex-col justify-center col-span-2 ">
+              <a href={finalURL} target="_blank" rel="nofollow">
+                <Image
+                  src={img.url.toString() + "=w800"}
+                  width={width}
+                  height={height}
+                  alt="Image from Google Photos Album from Rameez Kakodker"
+                />
+              </a>
+            </div>
+          );
+        } else {
+          return (
+            <div class="singleImage flex flex-col justify-center ">
+              <a href={finalURL} target="_blank" rel="nofollow">
+                <Image
+                  src={img.url.toString() + "=w800"}
+                  width={width}
+                  height={height}
+                  alt="Image from Google Photos Album from Rameez Kakodker"
+                />
+              </a>
+            </div>
+          );
+        }
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .singleImage a {
+    opacity: 1;
+    display: block;
+  }
+  .singleImage img {
+    /* border: 10px solid #fff; */
+    border-radius: 5px;
+    object-fit: cover;
+    padding: 0;
+    height: 400px;
+    transition: scale 400ms ease;
+    z-index: 10;
+  }
+  .singleImage:hover img {
+    scale: 0.95;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+    border: 1px solid #fff;
+  }
+</style>

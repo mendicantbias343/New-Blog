@@ -1,5 +1,8 @@
 ---
-import { getPosts } from "../../sanity/api";
+import {
+  getLatestNotesWithPagination,
+  getLatestArticlesWithPagination,
+} from "../../sanity/api";
 import { sanityClient } from "sanity:client";
 import PortableText from "../portableText/PortableText.astro";
 import HomeArticleItem from "./HomeArticleItem.astro";
@@ -38,122 +41,110 @@ const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
 
 // const typess = type == "articles" ? "post" : type == "notes" ? "note" : "";
 
-const postData = await getPosts("post");
-const noteData = await getPosts("note");
+const postData = await getLatestArticlesWithPagination(10); //get the latest 10 posts
+const noteData = await getLatestNotesWithPagination(10); // get the latest 10 notes
+
+//check which is latest publication (either a new note or a new article)
+
+const notesIsLatest = () => {
+  const latestArticle = postData[0];
+  const latestNote = noteData[0];
+  if (latestArticle._createdAt > latestNote._createdAt) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 const siteSettings: siteSettings = await sanityClient.fetch(
   `*[_id == "siteSettings"][0]`
 );
 ---
 
-<div class="homegrid">
-  <div class="articles">
-    <div class="intro-block">
-      <span class="text-3xl">👋</span>
-      <PortableText portableText={siteSettings.introtext} />
-      <span class="block md:hidden">
-        <h2>Latest Articles</h2>
-        <span class="text-xs"
-          >(Long form content that goes indepth into a topic)</span
-        >
-      </span>
-    </div>
-    {
-      postData.map((post, index) => (
-        <HomeArticleItem
-          title={post.title}
-          body={post.summary}
-          date={post._createdAt}
-          imgURL={post.image}
-          readingTime={post.readtime}
-          type={post._type}
-          index={index}
-          slug={post.slug}
-        />
-      ))
-    }
+<div class="intro-block w-100 mt-4 lg:mt-8">
+  <span class="text-3xl">👋</span>
+  <PortableText portableText={siteSettings.introtext} />
+</div>
+
+<div class="breakout mt-8 lg:mt-16">
+  <div class="flex flex-row justify-start flex-grow items-center gap-8">
+    <h2 class="w-fit min-w-fit p-0 italic">
+      Latest {notesIsLatest() ? "Notes" : "Articles"}
+    </h2>
+    <div class="h-[1px] bg-[var(--accent-color)] w-full"></div>
+    <span class="w-fit min-w-fit p-0">
+      <a href={notesIsLatest() ? "/notes/" : "/articles/"}> View All</a>
+    </span>
   </div>
-  <div class="notes">
-    <div>
-      <h2 class="text-xl p-0">Notes For You (and me):</h2>
-    </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
     {
-      noteData.map((post, index) => (
-        <HomeNoteItem
-          title={post.title}
-          body={post.summary}
-          date={post._createdAt}
-          imgURL={post.image}
-          readtime={post.readtime}
-          type={post._type}
-          index={index}
-          slug={post.slug}
-        />
-      ))
+      notesIsLatest()
+        ? noteData.map((post, index) => (
+            <HomeNoteItem
+              title={post.title}
+              body={post.summary}
+              date={post._createdAt}
+              imgURL={post.image}
+              readtime={post.readtime}
+              type={post._type}
+              index={index}
+              slug={post.slug}
+            />
+          ))
+        : postData.map((post, index) => (
+            <HomeArticleItem
+              title={post.title}
+              body={post.summary}
+              date={post._createdAt}
+              imgURL={post.image}
+              readingTime={post.readtime}
+              type={post._type}
+              index={index}
+              slug={post.slug}
+            />
+          ))
     }
   </div>
 </div>
-<a
-  href="https://lh3.googleusercontent.com/pw/ABLVV85MfBejWhDIUkJD27PCBms0wV1SwEdi7KoBKcFf8tf_MHfxRxDAEB6lSAmH-K7X8xuv50lMe1WYUhWMxB5OhgWIiTWy2qRdj491Emz2xyyyw4LblFu-=w2400"
->
-  <img
-    src="https://lh3.googleusercontent.com/pw/ABLVV85MfBejWhDIUkJD27PCBms0wV1SwEdi7KoBKcFf8tf_MHfxRxDAEB6lSAmH-K7X8xuv50lMe1WYUhWMxB5OhgWIiTWy2qRdj491Emz2xyyyw4LblFu-=w600-h315-p-k"
-  />
-</a>
-<style>
-  .intro-block {
-    border: 0.5rem solid hsl(var(--accent-hue), 50%, 45%, 0.5);
-    padding: 1rem;
-    height: max-content;
-  }
-  .homegrid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-  }
-  .articles {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1rem, 10vw + 1rem, 3rem);
-  }
-  .notes {
-    border-left: 1px dashed hsl(var(--accent-hue), 50%, 45%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 2rem;
-    padding-left: 2rem;
-  }
-  @media (max-width: 1200px) {
-    .homegrid {
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+<div class="breakout mt-8 lg:mt-16">
+  <div class="flex flex-row justify-start flex-grow items-center gap-8">
+    <h2 class="w-fit min-w-fit p-0 italic">
+      Latest {!notesIsLatest() ? "Notes" : "Articles"}
+    </h2>
+    <div class="h-[1px] bg-[var(--accent-color)] w-full"></div>
+    <span class="w-fit min-w-fit p-0">
+      <a href={!notesIsLatest() ? "/notes/" : "/articles/"}> View All</a>
+    </span>
+  </div>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+    {
+      !notesIsLatest()
+        ? noteData.map((post, index) => (
+            <HomeNoteItem
+              title={post.title}
+              body={post.summary}
+              date={post._createdAt}
+              imgURL={post.image}
+              readtime={post.readtime}
+              type={post._type}
+              index={index}
+              slug={post.slug}
+            />
+          ))
+        : postData.map((post, index) => (
+            <HomeArticleItem
+              title={post.title}
+              body={post.summary}
+              date={post._createdAt}
+              imgURL={post.image}
+              readingTime={post.readtime}
+              type={post._type}
+              index={index}
+              slug={post.slug}
+            />
+          ))
     }
-    .articles {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-  }
-  @media (max-width: 768px) {
-    .homegrid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-    .articles {
-      padding-left: 0;
+  </div>
+</div>
 
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .notes {
-      border-top: 1px dashed var(--accent-color);
-      margin-top: 1rem;
-      padding-top: 1rem;
-      padding-left: 0px;
-      border-left: none;
-    }
-    .intro-block {
-      border: none;
-      padding: 0;
-    }
-  }
-</style>
+<div></div>

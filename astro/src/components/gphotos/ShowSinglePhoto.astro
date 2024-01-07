@@ -1,3 +1,13 @@
-Flow: First Authenticate (JS?) Then get the media-items from the album we want
-Then randomly pick one media-item id REACT component might be needed as BaseURL
-expires after 30 mins and we'll need to do some dicking around to get the URL
+---
+import { getRandomImage } from "../../pages/photos/index";
+import { Image } from "astro:assets";
+
+const img = await getRandomImage();
+---
+
+<Image
+  src={img.toString() + "=w800"}
+  width="1000"
+  height="1000"
+  alt="Image from Google Photos Album from Rameez Kakodker"
+/>

@@ -5,7 +5,7 @@ import Layout from "../../layouts/HomeLayout.astro";
 import { urlForImage } from "../../sanity/urlForImage";
 import FormattedDate from "../../components/FormattedDate.astro";
 import Sharing from "../../components/main/Sharing.astro";
-
+import { Debug } from "astro:components";
 interface Article {
   title: string;
   _createdAt: string;
@@ -80,7 +80,6 @@ const cats = !post.cats
       </div>
     </div>
   </div>
-
   <PortableText portableText={post.body} />
   <Sharing description={post.summary} via="@irumk" title={post.title} />
 </Layout>

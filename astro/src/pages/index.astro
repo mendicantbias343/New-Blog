@@ -1,14 +1,13 @@
 ---
 import Layout from "../layouts/HomeLayout.astro";
 import HomeItemsList from "../components/main/HomeItemsListing.astro";
+import ShowPhotoGallery from "../components/gphotos/ShowPhotoGallery.astro";
 ---
 
-<Layout
-  title="Home - Mendicant Bias - A blog from Rameez Kakodker"
-  description=""
->
+<Layout title="Home - Mendicant Bias - A blog from Rameez Kakodker">
   <!-- Iterate through the blog posts -->
-  <div class="flex flex-col text-left gap-10 relative breakout lg:mt-8">
-    <HomeItemsList limit="4" category="" sortBy="latest" />
-  </div>
+
+  <HomeItemsList limit="4" category="" sortBy="latest" />
+
+  <ShowPhotoGallery count="10" />
 </Layout>
