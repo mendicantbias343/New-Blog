@@ -37,10 +37,10 @@ https://github.com/silent1mezzo/mckerlie.com/blob/main/src/config.ts
 
 
 Updated list:
-[] Fetch a random foto from Google Photos Album
-[] Update Page descriptions to be dynamic
-[] Fix height issue on desktop for the intro block
-[] Remove unused links
+[x] Fetch a random foto from Google Photos Album
+[x] Update Page descriptions to be dynamic
+[x] Fix height issue on desktop for the intro block
+[x] Remove unused links
 [] About page fixes
 [] Search option
 [] SEO task breakdown
@@ -51,16 +51,16 @@ Updated list:
 [] Halo theme 
 [] Robots.txt
 [] On Site engagement
-[] H2 links (automatically)
-[] LAZY LOADING IMAGES
+[x] H2 links (automatically)
+[x] LAZY LOADING IMAGES
 [] Related posts/notes
-[] Homepage - limit display of articles down to 10, notes to 20 (figure out that number)
-[] Use <Image> astro:asset to render images on home/other pages
+[x] Homepage - limit display of articles down to 10, notes to 20 (figure out that number)
+[x] Use <Image> astro:asset to render images on home/other pages
 [] Use Sanity Image for PortableText
-[] Change text from "Read more" to 'Continue reading' if the user has started reading the article, but not finished it
-[] Rework the home page (needs less grid, more sections with grid)
-[] Colors - right now are super random
-[] Hover effect to be changed for articles
-[] Single article page to be redesigned
+[x] [NOT DOING] Change text from "Read more" to 'Continue reading' if the user has started reading the article, but not finished it
+[x] Rework the home page (needs less grid, more sections with grid)
+[x] [Reduced colors altogether] Colors - right now are super random
+[x] Hover effect to be changed for articles
+[x] Single article page to be redesigned
 [] Images need to have more information (figcaption, etc)
 [] 

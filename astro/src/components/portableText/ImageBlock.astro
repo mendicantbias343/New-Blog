@@ -1,0 +1,21 @@
+---
+import { urlForImage } from "../../sanity/urlForImage";
+import { Image } from "astro:assets";
+
+const { asset, alt } = Astro.props.node;
+
+const url = urlForImage(asset);
+let alty = alt
+  ? alt
+  : "Image for article. Problem loading? Please refresh the page.";
+---
+
+<figure class="breakout flex flex-col justify-center items-center">
+  <Image
+    class="responsive__img max-h-[500px] w-auto"
+    src={url}
+    alt={alty}
+    width="1000 "
+    height="1000"
+  />
+</figure>

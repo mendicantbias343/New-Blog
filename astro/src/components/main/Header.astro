@@ -36,7 +36,7 @@ const { active } = Astro.props;
     <div class="flex flex-row justify-between mt-8 menu">
       <Navigation activeItem={active} navMenu={await siteSettings.navMenu} />
       <div class="flex flex-row justify-start gap-5">
-        <div class="w-5"><Icon pack="ri" name="search-line" /></div>
+        <!-- <div class="w-5"><Icon pack="ri" name="search-line" /></div> -->
         {
           Object.entries(siteSettings.person).map((m) => (
             <div class="w-5">
