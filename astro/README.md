@@ -47,7 +47,7 @@ Updated list:
 [] handle 404s, redirects and others
 [] RSS
 [] Series as a category type
-[] Category listing pages
+[x] Category listing pages
 [] Halo theme 
 [] Robots.txt
 [] On Site engagement

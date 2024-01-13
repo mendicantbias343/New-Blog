@@ -27,19 +27,18 @@ const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
 // const typess = type == "articles" ? "post" : type == "notes" ? "note" : "";
 
 const data = await getPosts(type);
-let tagsArray = [];
-let countInArray = [];
+let tagsArray: any[] = [];
+let countInArray: any[] = [];
 if (type == "note") {
-  tagsArray = [
-    ...new Set(
-      data
-        .map((item) => {
-          let x = item.notetags.map((tag) => tag.label);
-          return x;
-        })
-        .flat(Infinity)
-    ),
-  ];
+  let x = new Set(
+    data
+      .map((item) => {
+        let x = item.notetags.map((tag) => tag.label);
+        return x;
+      })
+      .flat(Infinity)
+  );
+  tagsArray = [...x];
 
   countInArray = tagsArray.map((tag) => {
     return data.filter((note) => {
