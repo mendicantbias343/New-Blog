@@ -10,7 +10,7 @@ import Sharing from "../../components/main/Sharing.astro";
 
 interface Note {
   title: string;
-  _createdAt: string;
+  publishedAt: string;
   _id: string;
   body: Array<Object>;
   slug: string;
@@ -60,7 +60,7 @@ const tags = post.notetags.map((tag) => tag.label);
   }
   <article class="relative">
     <span class="dateholder absolute top-[4rem] left-[-4.2rem] rotate-[-90deg]">
-      <FormattedDate date={post._createdAt} display={true} />
+      <FormattedDate date={post.publishedAt} display={true} />
     </span>
     <span class="text-xs uppercase">
       Approx {post.readingtime ? post.readingtime : 2} mins reading time</span
@@ -75,7 +75,17 @@ const tags = post.notetags.map((tag) => tag.label);
     <PortableText portableText={post.body} />
 
     <div class="flex flex-row gap-3 opacity-70">
-      {post.notetags.map((tag) => <span> #{tag.label} </span>)}
+      {
+        post.notetags.map((tag) => (
+          <span>
+            {" "}
+            <a href={"/tag/" + tag.label.toLowerCase().replace(" ", "-")}>
+              {" "}
+              #{tag.label.toLowerCase().replace(" ", "-")}{" "}
+            </a>{" "}
+          </span>
+        ))
+      }
     </div>
     <Sharing description={post.summary} via="@irumk" title={post.title} />
   </article>

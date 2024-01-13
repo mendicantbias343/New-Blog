@@ -17,7 +17,7 @@ const { date, type, title, body, slug, readtime, imgURL, index } = Astro.props;
 
 <a
   class="grid-item"
-  href={type == "post" ? "/articles/" + slug : "/notes/" + slug}
+  href={type == "post" ? "/articles" + slug : "/notes" + slug}
 >
   <div
     class="blog-item flex flex-col flex-grow relative"

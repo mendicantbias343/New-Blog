@@ -12,7 +12,7 @@ export function createAsyncPublishAction(originalAction, context) {
     return {
       ...originalResult,
       onHandle: async () => {
-        if (originalAction.action === 'publish' && props.draft._type != 'siteSettings') {
+        if (originalAction.action === 'publish' && ['post', 'note'].includes(props.draft._type)) {
           // Update the readtime
 
           const plainBody = toPlainText(props.draft.body)
@@ -26,15 +26,15 @@ export function createAsyncPublishAction(originalAction, context) {
 
           const summary = plainBody.split(' ').slice(0, 25).join(' ')
           patch.execute([{set: {summary: summary}}])
-          // Populate summary & keywords (to be setup)
+          console.log(props.draft)
+          if (!props.draft.publishedAt) {
+            // if this is set - do nothing
+            var now = new Date()
+            patch.execute([{set: {publishedAt: now.toISOString()}}])
+            console.log(props.draft.publishedAt)
+          }
 
-          //   if (context.schemaType == 'post' || context.schemaType == 'note') {
-          //     patch.execute([{set: {published: true}}])
-          //   }
-          // } else {
-          //   if (context.schemaType == 'post' || context.schemaType == 'note') {
-          //     patch.execute([{set: {published: false}}])
-          //   }
+          // check if the published date is valid - if yes, then do nothing, else update it to created_at date
         }
 
         originalResult.onHandle()

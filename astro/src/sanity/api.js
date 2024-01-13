@@ -9,7 +9,7 @@ export async function getPosts(types) {
   let query = "";
   if (types == "post") {
     query = `*[_type == "post"] {
-      _createdAt,
+      publishedAt,
         "cats":categories[]->{title, slug},
         title,
         "slug" : slug.current,
@@ -18,23 +18,23 @@ export async function getPosts(types) {
         "image" : mainImage.asset._ref,
         readtime,
         _type
-    } | order(_createdAt desc)`;
+    } | order(publishedAt desc)`;
   } else if (types == "note") {
     query = `*[_type == "note"] {
       title,
-    _createdAt,
+    publishedAt,
     _id,
     body,
     "slug" : slug.current,
     "notetags" : notetags[]{label} ,
     _type,
-    readingtime,
+    readtime,
     summary
-    } | order(_createdAt desc)`;
+    } | order(publishedAt desc)`;
   } else {
     //homepage view
     query = `*[_type == "post" || _type=="note"] {
-      _createdAt,
+      publishedAt,
         title,
         "slug" : slug.current,
         summary,
@@ -42,7 +42,7 @@ export async function getPosts(types) {
         readtime,
         _type
 
-    } | order(_createdAt desc)`;
+    } | order(publishedAt desc)`;
   }
 
   const posts = await sanityClient.fetch(query);
@@ -61,15 +61,15 @@ export async function getSlugs(contentType) {
 }
 
 export async function getLatestNotesWithPagination(countToShare) {
-  let query = `*[_type == "note"] | order(_createdAt desc) [0...${countToShare}] {
+  let query = `*[_type == "note"] | order(publishedAt desc) [0...${countToShare}] {
     title,
-  _createdAt,
+  publishedAt,
   _id,
   body,
   "slug" : slug.current,
   "notetags" : notetags[]{label} ,
   _type,
-  readingtime,
+  readtime,
   summary
   } `;
 
@@ -78,8 +78,8 @@ export async function getLatestNotesWithPagination(countToShare) {
 }
 
 export async function getLatestArticlesWithPagination(countToShare) {
-  let query = `*[_type == "post"] | order(_createdAt desc) [0...${countToShare}] {
-    _createdAt,
+  let query = `*[_type == "post"] | order(publishedAt desc) [0...${countToShare}] {
+    publishedAt,
       "cats":categories[]->{title, slug},
       title,
       "slug" : slug.current,
@@ -92,4 +92,56 @@ export async function getLatestArticlesWithPagination(countToShare) {
 
   const posts = await sanityClient.fetch(query);
   return posts;
+}
+
+export async function getArticlesForCategory(category) {
+  let query = `*[_type=="category" && title == '${category}']{
+    title,
+      slug,
+    "post": *[_type=="post" && references(^._id)] {
+    title, slug, mainImage, summary
+  }
+}`;
+  const articles = await sanityClient.fetch(query);
+  return articles;
+}
+
+export async function getAllCategoriesAndArticles() {
+  let query = `*[_type=="category"]{
+    
+    title,
+      slug,
+      
+      readtime,
+    "post": *[_type=="post" && references(^._id)][0...10] {
+      publishedAt, title, slug, readtime,mainImage, summary,"cats":categories[]->{title, slug},
+  }| order(publishedAt desc)
+}`;
+  const categories = await sanityClient.fetch(query);
+  return categories;
+}
+
+/*
+
+For getting articles against a tag:
+*[_type=="note" && 'Product Management' in notetags[].label ]
+
+*/
+
+export async function getNotesFromTag(tag) {
+  let query =
+    `*[_type=="note" && '` +
+    tag +
+    `' in notetags[].label ]{
+    title,
+  publishedAt,
+  _id,
+  "slug" : slug.current,
+  "notetags" : notetags[]{label} ,
+  _type,
+  readtime,
+  summary
+  } | order(publishedAt desc)`;
+  const notes = await sanityClient.fetch(query);
+  return notes;
 }

@@ -1,0 +1,85 @@
+---
+import { getPosts } from "../../sanity/api";
+import Layout from "../../layouts/HomeLayout.astro";
+import HomeNoteItem from "components/main/HomeNoteItem.astro";
+
+interface Note {
+  label: string;
+}
+
+interface Post {
+  summary: string;
+  cats: Note[];
+  title: string;
+  image: URL;
+  publishedAt: string;
+  readtime: number;
+  slug: {
+    current: string;
+  };
+}
+
+export async function getStaticPaths() {
+  const data = await getPosts("note");
+  //get Unique note tags
+  const tagsArray = [
+    ...new Set(
+      data
+        .map((item) => {
+          let x = item.notetags.map((tag) => tag.label);
+          return x;
+        })
+        .flat(Infinity)
+    ),
+  ];
+  return tagsArray.map((tag: string) => ({
+    params: { slug: tag.toLowerCase().replace(" ", "-") },
+    props: {
+      title: tag,
+      slug: tag.toLowerCase().replace(" ", "-"),
+      posts: data.filter((note) => {
+        if (note.notetags.map((item) => item.label).includes(tag)) {
+          return note;
+        }
+      }),
+    },
+  }));
+}
+
+const { title, slug, posts } = Astro.props;
+
+const hashTagTitle = title.toLowerCase().replace(" ", "-");
+---
+
+<Layout
+  title={`All Notes with the tag #` + hashTagTitle + ` from mendicant bias`}
+  description=`Showing articles of the tag $(title) in the blog mendicant bias. The notes are written by Rameez Kakodker.`
+>
+  <div class="breakout mt-8 lg:mt-16">
+    <div class="flex flex-row justify-start flex-grow items-center gap-8">
+      <h3 class="w-fit min-w-fit p-0 italic font-normal">
+        Latest note tagged with <span class="font-bold">
+          #{hashTagTitle}
+        </span>
+      </h3>
+      <div class="h-[1px] bg-[var(--accent-color)] w-full"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+      {
+        posts.map((post, index) => (
+          <HomeNoteItem
+            title={post.title}
+            body={post.summary}
+            date={post.publishedAt}
+            imgURL={post.image}
+            readtime={post.readtime}
+            type={post._type}
+            index={index}
+            slug={post.slug}
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>

@@ -27,47 +27,59 @@ const { category, limit, pagination, isSummary, sortBy, type } = Astro.props;
 // const typess = type == "articles" ? "post" : type == "notes" ? "note" : "";
 
 const data = await getPosts(type);
+let tagsArray = [];
+let countInArray = [];
+if (type == "note") {
+  tagsArray = [
+    ...new Set(
+      data
+        .map((item) => {
+          let x = item.notetags.map((tag) => tag.label);
+          return x;
+        })
+        .flat(Infinity)
+    ),
+  ];
+
+  countInArray = tagsArray.map((tag) => {
+    return data.filter((note) => {
+      if (note.notetags.map((item) => item.label).includes(tag)) {
+        return note;
+      }
+    }).length;
+  });
+}
 ---
 
-<!-- <div class="flex flex-row gap-4 flex-wrap justify-center md:justify-start">
-  {
-    !type && (
-      <>
-        <Button
-          client:only="react"
-          type="filter"
-          content="Article"
-          isActive={false}
-        />
-        <Button
-          client:only="react"
-          type="filter"
-          content="Notes"
-          isActive={false}
-        />
-      </>
-    )
-  }
-
-  <Button
-    client:only="react"
-    type="sort"
-    content="Most Popular"
-    isActive={false}
-  />
-  <Button client:only="react" type="sort" content="Latest" isActive={true} />
-</div> -->{
+{
   type && (
-    <>
-      <div class="breakout">
-        <h1>
-          Showing {sortBy + " "} {type == "post" ? "article" : type}s:
-        </h1>
-      </div>
-    </>
+    <div class="breakout">
+      <h1>
+        Showing {sortBy + " "} {type == "post" ? "article" : type}s:
+      </h1>
+    </div>
   )
 }
-
+{
+  type == "note" && (
+    <div>
+      <h4> Filter by: </h4>
+      <div class="flex flex-row flex-wrap gap-x-4 ">
+        {tagsArray.map((tag: string, index) => {
+          let x = tag.toLowerCase().replace(" ", "-");
+          return (
+            <span class="w-fit">
+              <a href={"/tag/" + x}>
+                {" "}
+                #{x} ({countInArray[index]}){" "}
+              </a>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  )
+}
 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
   {
     data.map((post, index) =>
@@ -75,7 +87,7 @@ const data = await getPosts(type);
         <HomeArticleItem
           title={post.title}
           body={post.summary}
-          date={post._createdAt}
+          date={post.publishedAt}
           imgURL={post.image}
           readingTime={post.readtime}
           type={post._type}
@@ -86,7 +98,7 @@ const data = await getPosts(type);
         <HomeNoteItem
           title={post.title}
           body={post.summary}
-          date={post._createdAt}
+          date={post.publishedAt}
           imgURL={post.image}
           readtime={post.readtime}
           type={post._type}

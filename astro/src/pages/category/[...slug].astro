@@ -1,0 +1,82 @@
+---
+import PortableText from "../../components/portableText/PortableText.astro";
+import { getAllCategoriesAndArticles, getPosts } from "../../sanity/api";
+import Layout from "../../layouts/HomeLayout.astro";
+import { urlForImage } from "../../sanity/urlForImage";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Sharing from "../../components/main/Sharing.astro";
+import HomeArticleItem from "components/main/HomeArticleItem.astro";
+
+interface Category {
+  title: string;
+  slug: string;
+}
+
+interface Post {
+  summary: string;
+  cats: Category[];
+  title: string;
+  image: URL;
+  publishedAt: string;
+  readtime: number;
+  mainImage: {
+    asset: {
+      _ref: URL;
+    };
+  };
+  slug: {
+    current: string;
+  };
+}
+
+interface props {
+  title: string;
+  slug: string;
+  posts: Post[];
+}
+
+export async function getStaticPaths() {
+  const data = await getAllCategoriesAndArticles();
+
+  return data.map((category) => ({
+    params: { slug: category.slug.current },
+    props: {
+      title: category.title,
+      slug: category.slug.current,
+      posts: category.post,
+    },
+  }));
+}
+
+const { title, slug, posts }: props = Astro.props;
+---
+
+<Layout
+  title={`All ${title} articles from mendicant bias`}
+  description=`Showing articles of the category $(title) in the blog mendicant bias. The articles are written by Rameez Kakodker.`
+>
+  <div class="breakout mt-8 lg:mt-16">
+    <div class="flex flex-row justify-start flex-grow items-center gap-8">
+      <h2 class="w-fit min-w-fit p-0 italic">
+        Latest {title} Articles
+      </h2>
+      <div class="h-[1px] bg-[var(--accent-color)] w-full"></div>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+      {
+        posts.map((post, index) => (
+          <HomeArticleItem
+            title={post.title}
+            body={post.summary}
+            date={post.publishedAt.toString()}
+            imgURL={post.mainImage.asset._ref}
+            readingTime={post.readtime.toString()}
+            type={"post"}
+            index={index}
+            slug={post.slug.current}
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>

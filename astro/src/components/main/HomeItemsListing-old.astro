@@ -62,7 +62,7 @@ const siteSettings: siteSettings = await sanityClient.fetch(
         <HomeArticleItem
           title={post.title}
           body={post.summary}
-          date={post._createdAt}
+          date={post.publishedAt}
           imgURL={post.image}
           readingTime={post.readtime}
           type={post._type}
@@ -81,7 +81,7 @@ const siteSettings: siteSettings = await sanityClient.fetch(
         <HomeNoteItem
           title={post.title}
           body={post.summary}
-          date={post._createdAt}
+          date={post.publishedAt}
           imgURL={post.image}
           readtime={post.readtime}
           type={post._type}

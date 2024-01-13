@@ -4,9 +4,9 @@ import FormattedDate from "../FormattedDate.astro";
 import { urlForImage } from "../../sanity/urlForImage";
 interface Props {
   date: string;
-  type: string;
+  type?: string;
   title: string;
-  body: string;
+  body?: string;
   slug?: string;
   readingTime: string;
   imgURL: URL;
@@ -21,7 +21,7 @@ const imgURLFromSanity = urlForImage(imgURL);
 
 <a
   class="grid-item"
-  href={type == "post" ? "/articles/" + slug : "/notes/" + slug}
+  href={type == "post" ? "/articles" + slug : "/notes" + slug}
 >
   <div class="content-container h-full w-full">
     <h3>{title}</h3>

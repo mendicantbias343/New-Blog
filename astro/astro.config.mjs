@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import react from "@astrojs/react";
+
 import { sanityIntegration } from "@sanity/astro";
 
 // https://astro.build/config
@@ -10,7 +10,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     tailwind(),
-    react({ experimentalReactChildren: true }),
+
     sanityIntegration({
       projectId: "1s3iny7g",
       dataset: "production",
@@ -20,5 +20,8 @@ export default defineConfig({
   ],
   build: {
     inlineStylesheets: "always",
+  },
+  redirects: {
+    "/tag/": "/notes",
   },
 });

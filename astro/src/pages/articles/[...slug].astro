@@ -8,7 +8,7 @@ import Sharing from "../../components/main/Sharing.astro";
 import { Debug } from "astro:components";
 interface Article {
   title: string;
-  _createdAt: string;
+  publishedAt: string;
   _id: string;
   body: Array<Object>;
   image: string;
@@ -70,8 +70,9 @@ const cats = !post.cats
         <div class="text-xs">
           <span
             >Written on
-            <FormattedDate date={post._createdAt} display={true} />
-            <!-- {post._createdAt} -->
+
+            <FormattedDate date={post.publishedAt} display={true} />
+            <!-- {post.publishedAt} -->
           </span>
           <span class=""> •</span>
 

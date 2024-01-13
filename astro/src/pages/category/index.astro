@@ -1,0 +1,37 @@
+---
+import Layout from "../../layouts/HomeLayout.astro";
+import BlogList from "../../components/main/BlogList.astro";
+import {
+  getAllCategoriesAndArticles,
+  getArticlesForCategory,
+} from "../../sanity/api";
+import HomeArticleItem from "../../components/main/HomeArticleItem.astro";
+import CategoryListing from "components/main/CategoryListing.astro";
+
+const data = await getAllCategoriesAndArticles();
+console.log(data[0].post);
+---
+
+<Layout
+  title="All Categories of Articles Written by Rameez Kakodker"
+  description="Articles by categories in the blog Mendicant Bias. Articles of the categories "
+>
+  <!-- Iterate through the blog posts -->
+  <div class="flex flex-col text-left gap-10 relative breakout lg:mt-8">
+    {
+      data.map((category) => {
+        if (category.post.length > 0) {
+          return (
+            <CategoryListing
+              title={category.title}
+              slug={category.slug}
+              posts={category.post}
+            />
+          );
+        } else {
+          return "";
+        }
+      })
+    }
+  </div>
+</Layout>
