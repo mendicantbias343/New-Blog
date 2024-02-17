@@ -145,3 +145,20 @@ export async function getNotesFromTag(tag) {
   const notes = await sanityClient.fetch(query);
   return notes;
 }
+
+async function getItemsWithLimit(limitx) {
+  let limit = limitx > 0 ? limitx : 10;
+  query =
+    `*[_type == "post" || _type=="note"][0...` +
+    limit +
+    `] {
+    publishedAt,
+      title,
+      "slug" : slug.current,
+      summary,
+      "image" : mainImage.asset._ref,
+      readtime,
+      _type
+
+  } | order(publishedAt desc)`;
+}
