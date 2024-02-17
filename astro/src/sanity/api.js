@@ -146,7 +146,7 @@ export async function getNotesFromTag(tag) {
   return notes;
 }
 
-async function getItemsWithLimit(limitx) {
+export async function getItemsWithLimit(limitx) {
   let limit = limitx > 0 ? limitx : 10;
   query =
     `*[_type == "post" || _type=="note"][0...` +
