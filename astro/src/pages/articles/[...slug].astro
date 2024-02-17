@@ -62,7 +62,7 @@ const cats = !post.cats
           {
             cats &&
               cats.map((cat) => {
-                return <a href={cat.slug}>{cat.category}</a>;
+                return <a href={"/category" + cat.slug}>{cat.category}</a>;
               })
           }
         </div>

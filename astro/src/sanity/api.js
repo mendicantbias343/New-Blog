@@ -162,3 +162,20 @@ export async function getItemsWithLimit(limitx) {
 
   } | order(publishedAt desc)`;
 }
+
+export async function getProjects() {
+  let query = `*[_type=="project"]{
+    title,
+       "slug" : slug.current,
+      ogImage,
+       "projecttags" : projecttags[]{label},
+      readmore,
+      summary,
+      projectLink,
+      publishedAt
+    
+  }
+  `;
+  const projects = await sanityClient.fetch(query);
+  return projects;
+}

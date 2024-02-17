@@ -24,9 +24,11 @@ export function createAsyncPublishAction(originalAction, context) {
             }
           }
 
-          const summary = plainBody.split(' ').slice(0, 25).join(' ')
+          const summary =
+            props.draft.summary != ''
+              ? props.draft.summary
+              : plainBody.split(' ').slice(0, 25).join(' ')
           patch.execute([{set: {summary: summary}}])
-          console.log(props.draft)
           if (!props.draft.publishedAt) {
             // if this is set - do nothing
             var now = new Date()

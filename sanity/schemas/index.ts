@@ -5,5 +5,6 @@ import note from './note'
 import pages from './pages'
 
 import siteSettings from './siteSettings'
+import project from './project'
 
-export const schemaTypes = [post, note, category, blockContent, siteSettings, pages]
+export const schemaTypes = [post, note, category, blockContent, siteSettings, pages, project]
