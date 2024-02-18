@@ -14,7 +14,7 @@ export default defineConfig({
       host: "https://mendicantbias.com",
       sitemap: [
         "https://mendicantbias.com/sitemap.xml",
-        "https://www.mendicantbias.com",
+        "https://www.mendicantbias.com/sitemap.xml",
       ],
       policy: [
         {
