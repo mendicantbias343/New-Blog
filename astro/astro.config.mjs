@@ -11,7 +11,7 @@ export default defineConfig({
     sitemap(),
     tailwind(),
     robots({
-      host: "https://mendicantbias.com",
+      host: "https://www.mendicantbias.com",
       sitemap: [
         "https://mendicantbias.com/sitemap-index.xml",
         "https://www.mendicantbias.com/sitemap-index.xml",
