@@ -13,8 +13,8 @@ export default defineConfig({
     robots({
       host: "https://mendicantbias.com",
       sitemap: [
-        "https://mendicantbias.com/sitemap.xml",
-        "https://www.mendicantbias.com/sitemap.xml",
+        "https://mendicantbias.com/sitemap-index.xml",
+        "https://www.mendicantbias.com/sitemap-index.xml",
       ],
       policy: [
         {
