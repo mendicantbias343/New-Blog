@@ -76,6 +76,7 @@ const { active } = Astro.props;
 <script>
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("seamless")) {
-    document.querySelector(".logo h1").innerHTML += "x Seamless";
+    let logo = document.querySelector(".logo h1");
+    if (logo) logo.innerHTML += "x Seamless";
   }
 </script>

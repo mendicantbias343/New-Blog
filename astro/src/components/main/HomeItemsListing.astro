@@ -167,11 +167,13 @@ const siteSettings: siteSettings = await sanityClient.fetch(
   </div>
 </div>
 
-<script>
+<script type="js">
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("seamless")) {
     // add the Seamless data
-    document.querySelector(".seamless-intro")?.classList.remove("hidden");
-    document.querySelector(".intro-block")?.classList.add("hidden");
+    let seamless = document.querySelector(".seamless-intro");
+    let intro = document.querySelector(".intro-block");
+    seamless.classList.remove("hidden");
+    intro.classList.add("hidden");
   }
 </script>
