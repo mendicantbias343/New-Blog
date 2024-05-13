@@ -173,7 +173,7 @@ const siteSettings: siteSettings = await sanityClient.fetch(
     // add the Seamless data
     let seamless = document.querySelector(".seamless-intro");
     let intro = document.querySelector(".intro-block");
-    seamless.classList.remove("hidden");
-    intro.classList.add("hidden");
+    if (seamless) seamless.classList.remove("hidden");
+    if (intro) intro.classList.add("hidden");
   }
 </script>
