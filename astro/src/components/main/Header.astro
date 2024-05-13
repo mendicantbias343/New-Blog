@@ -52,7 +52,7 @@ const { active } = Astro.props;
         </div>
       </div>
     </div>
-    <div class="text-center mt-8">
+    <div class="text-center mt-8 logo">
       <div>
         <a href="/" class="relative">
           <h1>
@@ -73,3 +73,9 @@ const { active } = Astro.props;
     </div>
   </header>
 </div>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("seamless")) {
+    document.querySelector(".logo h1").innerHTML += "x Seamless";
+  }
+</script>
