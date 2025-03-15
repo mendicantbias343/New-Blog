@@ -37,30 +37,30 @@ https://github.com/silent1mezzo/mckerlie.com/blob/main/src/config.ts
 
 
 Updated list:
-[x] Fetch a random foto from Google Photos Album
-[x] Update Page descriptions to be dynamic
-[x] Fix height issue on desktop for the intro block
-[x] Remove unused links
-[] About page fixes
-[] Search option
-[] SEO task breakdown
-[] handle 404s, redirects and others
-[] RSS
-[] Series as a category type
-[x] Category listing pages
-[] Halo theme 
-[] Robots.txt
-[] On Site engagement
-[x] H2 links (automatically)
-[x] LAZY LOADING IMAGES
-[] Related posts/notes
-[x] Homepage - limit display of articles down to 10, notes to 20 (figure out that number)
-[x] Use <Image> astro:asset to render images on home/other pages
-[] Use Sanity Image for PortableText
-[x] [NOT DOING] Change text from "Read more" to 'Continue reading' if the user has started reading the article, but not finished it
-[x] Rework the home page (needs less grid, more sections with grid)
-[x] [Reduced colors altogether] Colors - right now are super random
-[x] Hover effect to be changed for articles
-[x] Single article page to be redesigned
-[] Images need to have more information (figcaption, etc)
-[] 
+- [x] Fetch a random foto from Google Photos Album
+- [x] Update Page descriptions to be dynamic
+- [x] Fix height issue on desktop for the intro block
+- [x] Remove unused links
+- [] About page fixes
+- [] Search option
+- [] SEO task breakdown
+- [] handle 404s, redirects and others
+- [] RSS
+- [] Series as a category type
+- [x] Category listing pages
+- [] Halo theme 
+- [] Robots.txt
+- [] On Site engagement
+- [x] H2 links (automatically)
+- [x] LAZY LOADING IMAGES
+- [] Related posts/notes
+- [x] Homepage - limit display of articles down to 10, notes to 20 (figure out that number)
+- [x] Use <Image> astro:asset to render images on home/other pages
+- [] Use Sanity Image for PortableText
+- [x] [NOT DOING] Change text from "Read more" to 'Continue reading' if the user has started reading the article, but not finished it
+- [x] Rework the home page (needs less grid, more sections with grid)
+- [x] [Reduced colors altogether] Colors - right now are super random
+- [x] Hover effect to be changed for articles
+- [x] Single article page to be redesigned
+- [] Images need to have more information (figcaption, etc)
+- [] 
